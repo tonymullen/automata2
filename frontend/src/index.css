@@ -12,3 +12,76 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* @font-face{
+  font-family: "automaton-icons";
+  src:local("automaton-icons"),
+  url('./assets/fonts/automaton-icons/fonts/automaton-icons.ttf')
+} */
+
+@font-face {
+  font-family: "automaton-icons";
+  src:url("./assets/fonts/automaton-icons/fonts/automaton-icons.eot");
+  src:url("./assets/fonts/automaton-icons/fonts/automaton-icons.eot?#iefix") format("embedded-opentype"),
+    url("./assets/fonts/automaton-icons/fonts/automaton-icons.woff") format("woff"),
+    url("./assets/fonts/automaton-icons/fonts/automaton-icons.ttf") format("truetype"),
+    url("./assets/fonts/automaton-icons/fonts/automaton-icons.svg#automaton-icons") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+div.playIcons {
+  float: left;
+  font-size: 2.75em;
+  /*  font-family: automaton-icons; */
+  margin-left: 20px;
+  margin-top: 20px;
+  position: relative;
+  width: 139px;
+  z-index: 500; }
+
+@media (max-width: 600px) {
+  div.playIcons {
+    font-size: 2.5em;
+    width: 1px; } }
+
+span.playIconSpan::-moz-selection {
+  background: white;
+  background: rgba(255, 255, 255, 0); }
+
+span.playIconSpan::selection {
+  background: white;
+  background: rgba(255, 255, 255, 0); }
+
+span.saveIcon {
+  font-size: 2.5em;
+  z-index: 500; }
+
+div.saveIcon {
+  float: right;
+  margin-right: 20px;
+  margin-top: 20px; }
+
+span.saveIcon.logInToSave {
+  font-size: 1em;
+  position: relative; }
+
+span.saveIcon:hover {
+  color: darkgray; }
+
+span.playIcons > span:hover {
+  color: darkgray; }
+
+span.saveIcon:active {
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-color: #565656;
+  color: transparent;
+  text-shadow: 0 2px 3px rgba(255, 255, 255, 0.5); }
+
+span.playIcons > span:active {
+  -webkit-background-clip: text;
+  background-clip: text;
+  background-color: #565656;
+  color: transparent;
+  text-shadow: 0 2px 3px rgba(255, 255, 255, 0.5); }

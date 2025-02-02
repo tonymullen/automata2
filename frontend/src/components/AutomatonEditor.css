@@ -1,4 +1,5 @@
 .__________cytoscape_container {
+  position: absolute;
   width: 100%
 }
 
@@ -146,3 +147,7 @@ th {
   /* Firefox */
   -ms-user-select: none;
   /* IE/Edge */ }
+
+/* div.automaton-editor {
+  display: inline-flex;
+} */

@@ -595,7 +595,7 @@ function AutomatonEditor() {
   });
 
   return (
-    <div>
+    <div className="automaton-editor">
       {/* <button onClick={openTapeModal}>Open Popup</button> */}
       <Tape
         isOpen={isTapeModalOpen}/>
@@ -608,9 +608,6 @@ function AutomatonEditor() {
         readAlphabet={selectableReadAlphabet}
         actionAlphabet={selectableActionAlphabet}/>
       <ControlButtons/>
-      <div className="automaton-title">
-          {automaton.title}
-      </div>
       <CytoscapeComponent
         zoom={1.5}
         autounselectify={true}

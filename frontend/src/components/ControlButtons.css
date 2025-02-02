@@ -1,0 +1,114 @@
+@charset "UTF-8";
+
+/* see @font-face in index.css */
+
+[data-icon]:before {
+  font-family: "automaton-icons" !important;
+  content: attr(data-icon);
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+[class^="auticon-"]:before,
+[class*=" auticon-"]:before {
+  font-family: "automaton-icons" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-variant: normal !important;
+  text-transform: none !important;
+  speak: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.auticon-arrow-bold-left:before {
+  content: "\61";
+}
+.auticon-arrow-bold-right:before {
+  content: "\62";
+}
+.auticon-circle-with-cross:before {
+  content: "\63";
+}
+.auticon-controller-fast-forward:before {
+  content: "\64";
+}
+.auticon-controller-jump-to-start:before {
+  content: "\65";
+}
+.auticon-controller-next:before {
+  content: "\66";
+}
+.auticon-controller-pause:before {
+  content: "\67";
+}
+.auticon-controller-play:before {
+  content: "\68";
+}
+.auticon-controller-step:before {
+  content: "\69";
+}
+
+div.playIcons {
+    float: left;
+    font-size: 2.75em;
+    /*  font-family: automaton-icons; */
+    margin-left: 20px;
+    margin-top: 20px;
+    position: relative;
+    width: 139px;
+    z-index: 500; }
+
+  @media (max-width: 600px) {
+    div.playIcons {
+      font-size: 2.5em;
+      width: 1px; } }
+
+  span.playIconSpan::-moz-selection {
+    background: white;
+    background: rgba(255, 255, 255, 0); }
+
+  span.playIconSpan::selection {
+    background: white;
+    background: rgba(255, 255, 255, 0); }
+
+  span.saveIcon {
+    font-size: 2.5em;
+    z-index: 500; }
+
+  div.saveIcon {
+    float: right;
+    margin-right: 20px;
+    margin-top: 20px; }
+
+  span.saveIcon.logInToSave {
+    font-size: 1.5em;
+    position: fixed;
+    right: 50px; }
+
+  span.saveIcon:hover {
+    color: gray; }
+
+  span.playIcons > span:hover {
+    color: gray; }
+
+  span.saveIcon:active {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-color: #565656;
+    color: transparent;
+    text-shadow: 0 2px 3px rgba(255, 255, 255, 0.5); }
+
+  span.playIcons > span:active {
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-color: #565656;
+    color: transparent;
+    text-shadow: 0 2px 3px rgba(255, 255, 255, 0.5); }
