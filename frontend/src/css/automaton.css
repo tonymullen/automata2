@@ -1,0 +1,118 @@
+/* Disable selection/copy in UIWebView */
+div.cy * {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+body, html {
+  height: 100%;
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0;
+  position: fixed;
+  width: 100%; }
+
+section.container.autedit {
+  margin: 0;
+  padding: 0;
+  width: 100vw; }
+
+.noscroll {
+  height: calc(100vh - 50px);
+  overflow: hidden;
+  position: fixed;
+  width: 100%; }
+
+body {
+  font: 14px helvetica neue, helvetica, arial, sans-serif; }
+
+header.navbar {
+  margin-bottom: 0; }
+
+.cy {
+  background: url(/images/GySvQ50pctTrans.png);
+  background-color: #EFEEE5;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%; }
+
+.cy > canvas::-moz-selection {
+  background: white;
+  background: rgba(255, 255, 255, 0); }
+
+.cy > canvas::selection {
+  background: white;
+  background: rgba(255, 255, 255, 0); }
+
+.cy > div > canvas::-moz-selection {
+  background: white;
+  background: rgba(255, 255, 255, 0); }
+
+.cy > div > canvas::selection {
+  background: white;
+  background: rgba(255, 255, 255, 0); }
+
+span.automaton_title {
+  bottom: 20px;
+  font-size: 2em;
+  left: 20px;
+  position: absolute;
+  z-index: 500; }
+
+a.editable-click {
+  border-bottom: dotted 2px black;
+  color: black; }
+
+a.editable-click:hover {
+  border-bottom: dotted 2px gray;
+  color: gray; }
+
+/*
+#info {
+  color: #c88;
+  font-size: 1em;
+  position: absolute;
+  z-index: -1;
+  left: 1em;
+  top: 1em;
+}
+
+#people-table {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: rgba(255, 200, 200, 0.5);
+}
+*/
+/*
+.panel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: transparent;
+}
+*/
+th {
+  text-align: left; }
+
+.noSelect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Chrome/Safari/Opera */
+  user-select: none;
+  /* non-prefixed version, currently
+                                  not supported by any browser */
+  -khtml-user-select: none;
+  /* Konqueror */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* IE/Edge */ }

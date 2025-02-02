@@ -1,0 +1,109 @@
+/* Overlay to cover the entire viewport with a semi-transparent background */
+/* .aem-popup-overlay {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+} */
+
+/* Popup container styling */
+.aem-popup {
+  z-index: 100;
+  background: blue;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  position: fixed;
+}
+
+/* Draggable header area */
+.aem-popup-header {
+  cursor: grab; /* Indicates that the element is draggable */
+  background: #3498db;
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+/* Close button styling */
+.aem-popup-close {
+  position: relative;
+  top: -5px;
+  right: -10px;
+  border: none;
+  background: #e74c3c;
+  color: white;
+  border-radius: 4px;
+  padding: 5px 5px;
+  cursor: pointer;
+}
+
+/* Content area of the popup */
+.aem-popup-content {
+  padding: 6px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.edgeLabelDropdown {
+  width: min-content;
+  display: inline-block;
+}
+
+.edgeLabelDropdowns {
+  width: 100%;
+}
+
+.edgeLabelSymbolInput {
+  font-family: 'Francois One', sans-serif;
+  font-size: 2em;
+  width: 30px;
+  height: 60px;
+  margin: auto;
+  padding: 0;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.edgeLabelSelect {
+  width:60px;
+  border: 2px solid #00AA66;
+}
+
+.noSelect {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.noSelect:focus {
+  outline: none !important;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+select {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  -khtml-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+}
+
+.add-edge-okay {
+  margin: 3px;
+  width: 95%;
+  box-shadow: none;
+  outline: none;
+}
