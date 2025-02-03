@@ -56,4 +56,49 @@ export default class AutomataController {
       res.status(500).json({ error: e });
     }
   }
+
+  static async apiPostAutomaton(req, res, next) {
+    try {
+      let id = req.params.id || {};
+      let automaton = await AutomataDAO.getAutomatonByID(id);
+      if (!automaton) {
+        res.status(404).json({ error: "Not found" });
+        return;
+      }
+      res.json(automaton);
+    } catch(e) {
+      console.log(`API, ${e}`);
+      res.status(500).json({ error: e });
+    }
+  }
+
+  static async apiUpdateAutomaton(req, res, next) {
+    try {
+      let id = req.params.id || {};
+      let automaton = await AutomataDAO.getAutomatonByID(id);
+      if (!automaton) {
+        res.status(404).json({ error: "Not found" });
+        return;
+      }
+      res.json(automaton);
+    } catch(e) {
+      console.log(`API, ${e}`);
+      res.status(500).json({ error: e });
+    }
+  }
+
+  static async apiDeleteAutomaton(req, res, next) {
+    try {
+      let id = req.params.id || {};
+      let automaton = await AutomataDAO.getAutomatonByID(id);
+      if (!automaton) {
+        res.status(404).json({ error: "Not found" });
+        return;
+      }
+      res.json(automaton);
+    } catch(e) {
+      console.log(`API, ${e}`);
+      res.status(500).json({ error: e });
+    }
+  }
 }

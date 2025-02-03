@@ -23,6 +23,19 @@ class AutomataDataService {
       `${API_BASE_URL}/api/v1/automata?${by}=${query}&page=${page}`
     );
   }
+
+  createAutomaton(data) {
+    return axios.post(`${API_BASE_URL}/api/v1/automata`, data);
+  }
+
+  updateAutomaton(data) {
+    return axios.put(`${API_BASE_URL}/api/v1/automata`, data);
+  }
+
+  deleteAutomaton(data) {
+    return axios.delete(
+      `${API_BASE_URL}/api/v1/automata`, { data });
+  }
 }
 
 /* eslint import/no-anonymous-default-export: [2, {"allowNew": true}] */
