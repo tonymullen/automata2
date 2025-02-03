@@ -53,7 +53,6 @@ function AutomatonEditor() {
       AutomataDataService.get(id)
       .then(response => {
         setAutomaton(response.data);
-        // console.log(response.data.eles);
       })
       .catch(e => {
         console.log(e);
@@ -65,12 +64,7 @@ function AutomatonEditor() {
   // Set up listeners and Cytoscape stuff
   // on automaton
   useEffect(() => {
-    console.log("Updating automaton");
     if (!(automaton==null)){
-      if (automaton.eles) {
-        console.log(automaton.eles.edges.length);
-        console.log(automaton.eles.nodes.length);
-      }
       cytoscape.use(cxtmenu);
       cytoscape.use(edgehandles);
       cytoscape.use(cytoscapePopper);
@@ -125,7 +119,7 @@ function AutomatonEditor() {
         });
 
         cy.on('tap', 'edge', function (e) {
-          console.log(e);
+          // console.log(e);
         });
 
         cy.on('taphold', 'edge', function (e) {
@@ -447,9 +441,7 @@ function AutomatonEditor() {
         }
 
         function stop() {
-          //console.log(eh);
           eh.stop();
-          //eh.options.stop();
         }
 
         function setHandleOn(node) {
@@ -463,7 +455,6 @@ function AutomatonEditor() {
             popperDiv.classList.add('popper-handle');
             popperDiv.addEventListener('mousedown', start);
             document.body.appendChild(popperDiv);
-            // console.log(node);
             popper = node.popper({
               content: popperDiv,
               popper: {
@@ -579,7 +570,6 @@ function AutomatonEditor() {
   });
 
   const updateAutomatonNodes = useCallback((cy_node)=>{
-    console.log(cy_node);
     let newNode = {
       data: cy_node.data()
     }
@@ -616,7 +606,7 @@ function AutomatonEditor() {
       <ControlButtons createPDF={createPDF}/>
       <CytoscapeComponent
         id="cy"
-        zoom={1.5}
+        zoom={1}
         autounselectify={true}
         boxSelectionEnabled={false}
         elements=

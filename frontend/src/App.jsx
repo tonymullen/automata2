@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Navbar, Nav } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 import Container from "react-bootstrap/Container";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -13,13 +15,15 @@ import AutomatonEditor from "./components/AutomatonEditor"
 // import "./css/stack.css";
 // import "./css/tape.css";
 
-
-// import Login from "./components/Login";
-// import Logout from "./components/Logout";
 // import AutomataList from "./components/AutomataList";
 // import AutomatonEditor from "./components/AutomatonEditor";
 
+import Login from "./components/Login";
+import Logout from "./components/Logout";
+
 import './App.css';
+
+const clientId = import.meta.env.VITE_APP_GOOGLE_CLIENT_ID;
 
 function App() {
 
@@ -27,6 +31,7 @@ function App() {
 
   return (
     <Router>
+      <GoogleOAuthProvider clientId={clientId}>
     <div className="App">
       <Navbar bg="automaton-navbar" expand="lg" sticky="top" variant="dark">
           <Container className="container-fluid">
@@ -47,11 +52,11 @@ function App() {
                 }
               </Nav> */}
             </Navbar.Collapse>
-            {/* { user ? (
+            { user ? (
                 <Logout setUser={setUser}/>
               ) : (
                 <Login setUser={setUser}/>
-              )} */}
+              )}
           </Container>
         </Navbar>
         <Routes>
@@ -69,6 +74,7 @@ function App() {
           />
         </Routes>
     </div>
+    </GoogleOAuthProvider>
     </Router>
   );
 }
