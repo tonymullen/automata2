@@ -57,17 +57,33 @@ export default class AutomataController {
     }
   }
 
-  static async apiPostAutomaton(req, res, next) {
+  static async apiAddAutomaton(req, res, next) {
     try {
-      let id = req.params.id || {};
-      let automaton = await AutomataDAO.getAutomatonByID(id);
-      if (!automaton) {
-        res.status(404).json({ error: "Not found" });
-        return;
+      const automaton = req.body.automaton;
+      const userInfo = {
+        name: req.body.name,
+        _id: req.body.user_id,
       }
-      res.json(automaton);
+
+      const date = new Date();
+
+      const automatonResponse = await AutomataDAO.addAutomaton(
+        userInfo,
+        automaton,
+        date
+      );
+
+      const { error } = reviewResponse;
+
+      if (error ) {
+        res.status(500).json({ error: "Unable to create automaton" });
+      } else {
+        res.json({
+          status: "success",
+          response: reviewResponse
+        });
+      }
     } catch(e) {
-      console.log(`API, ${e}`);
       res.status(500).json({ error: e });
     }
   }

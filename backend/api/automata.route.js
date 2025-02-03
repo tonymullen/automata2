@@ -5,7 +5,7 @@ const router = express.Router(); // Get access to Express router
 
 router.route('/')
     .get(AutomataController.apiGetAutomata)
-    .post(AutomataController.apiPostAutomaton)
+    .post(AutomataController.apiAddAutomaton)
     .put(AutomataController.apiUpdateAutomaton)
     .delete(AutomataController.apiDeleteAutomaton);
 router.route('/id/:id').get(AutomataController.apiGetAutomatonById);

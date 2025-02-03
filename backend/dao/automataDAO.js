@@ -67,4 +67,45 @@ export default class AutomataDAO {
       throw e;
     }
   }
+
+  static async addAutomaton(user, automaton, date) {
+    try {
+      const automatonDoc = {
+        name: user.name,
+        user_id: user._id,
+        date: date,
+        automaton: automaton
+      }
+      return await automata.insertOne(automatonDoc);
+    } catch(e) {
+      console.error(`Unable to create automaton: ${e}`);
+      return { error: e };
+    }
+  }
+
+  static async updateAutomaton(automatonId, userId, automaton, date) {
+    try {
+      const updateResponse = await automata.updateOne(
+        { user_id: userId, _id: new ObjectId(automatonId) },
+        { $set: { automaton: automaton, date: date } }
+      );
+      return updateResponse;
+    } catch(e) {
+      console.error(`Unable to update automaton: ${e}`);
+      return { error: e };
+    }
+  }
+
+  static async deleteAutomaton(automatonId, userId) {
+    try {
+      const deleteResponse = await automata.deleteOne({
+        _id: new ObjectId(automatonId),
+        user_id: userId,
+      });
+      return deleteResponse;
+    } catch(e) {
+      console.error(`Unable to delete automaton: ${e}`);
+      return { error: e };
+    }
+  }
 }
