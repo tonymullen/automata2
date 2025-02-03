@@ -6,6 +6,7 @@ import cxtmenu from 'cytoscape-cxtmenu';
 import edgehandles from 'cytoscape-edgehandles';
 import cytoscapePopper from 'cytoscape-popper';
 import AutomataDataService from '../services/automata';
+import { generatePDF } from "../services/generatePDF";
 import AddEdgeModal from './AddEdgeModal';
 import ControlButtons from './ControlButtons';
 import Tape from './Tape';
@@ -594,9 +595,14 @@ function AutomatonEditor() {
     })
   });
 
+  const createPDF = useCallback(() => {
+    generatePDF("cy", automaton.title);
+  });
+
   return (
     <div className="automaton-editor">
       {/* <button onClick={openTapeModal}>Open Popup</button> */}
+      {/* <button onClick={createPDF}>create pdf</button> */}
       <Tape
         isOpen={isTapeModalOpen}/>
       <AddEdgeModal
@@ -607,8 +613,9 @@ function AutomatonEditor() {
         updateAutomaton={updateAutomatonEdges}
         readAlphabet={selectableReadAlphabet}
         actionAlphabet={selectableActionAlphabet}/>
-      <ControlButtons/>
+      <ControlButtons createPDF={createPDF}/>
       <CytoscapeComponent
+        id="cy"
         zoom={1.5}
         autounselectify={true}
         boxSelectionEnabled={false}

@@ -1,36 +1,40 @@
+import Glyphicon from '@strongdm/glyphicon'
 import "../assets/fonts/automaton-icons/fonts/automaton-icons.ttf";
 import './ControlButtons.css';
 
 
-function ControlButtons() {
+function ControlButtons({
+    createPDF
+}) {
 
     return (
         <div className="controller-buttons">
             <div className="playIcons noSelect">
                 <span className="playIcons noSelect">
-                    <span className="auticon-controller-play" onClick="vm.play('default')"></span>
-                    <span className="auticon-controller-fast-forward" onClick="vm.play('fast')"></span>
-                    <span className="auticon-controller-step" onClick="vm.play('step')"></span>
-                    <span className="auticon-controller-pause" onClick="vm.play('pause')"></span>
-                    <span className="auticon-controller-jump-to-start" onClick="vm.play('stop')"></span>
+                    <span className="auticon-controller-play" onClick={()=>{}}></span>
+                    <span className="auticon-controller-fast-forward" onClick={()=>{}}></span>
+                    <span className="auticon-controller-step" onClick={()=>{}}></span>
+                    <span className="auticon-controller-pause" onClick={()=>{}}></span>
+                    <span className="auticon-controller-jump-to-start" onClick={()=>{}}></span>
                 </span>
             </div>
             <div className="saveIcon" ng-hide="vm.automaton.demo">
                 <span className="saveIcon glyphicon glyphicon-cloud-upload"
-                    ng-click="vm.save(true)"  ng-show="vm.authentication.user;">
+                    ng-click="vm.save(true)"  ng-hide="vm.authentication.user;">
                 </span>
-                <span className="saveIcon logInToSave" ng-hide="vm.authentication.user;">
+                {/* <span className="saveIcon logInToSave" ng-show="vm.authentication.user;">
                     Log in first to<br/>enable saving
-                </span>
+                </span> */}
             </div>
 
             <div className="saveIcon fileIcon">
+
             <span className="saveIcon fileIcon glyphicon glyphicon-save-file"
-                  ng-click="vm.fileExport(true)"></span>
+                  onClick={createPDF}></span>
             </div>
 
             <span className="automaton_title" ng-if="!vm.automaton.demo && vm.authentication.user">
-            <a href="#"  editable-text="vm.automaton.title" onaftersave="vm.save(true)">
+            <a href="#"  editable-text="vm.automaton.title" my-onaftersave="vm.save(true)">
                 Automaton title
             </a>
             </span>
