@@ -112,3 +112,10 @@ div.playIcons {
     background-color: #565656;
     color: transparent;
     text-shadow: 0 2px 3px rgba(255, 255, 255, 0.5); }
+
+
+.auticon-controller-pause {
+  font-size: 0.85em;
+  position: relative;
+  top: -3px;
+}

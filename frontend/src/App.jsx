@@ -100,6 +100,9 @@ function App() {
           <Route path="/automaton_test" element={
             <AutomatonEditor/>}
           />
+          {/* <Route path="/automata/newtm" element={
+            <AutomatonEditor user={user} type="tm"/>}
+          /> */}
         </Routes>
     </div>
     </GoogleOAuthProvider>

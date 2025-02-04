@@ -7,13 +7,15 @@ import edgehandles from 'cytoscape-edgehandles';
 import cytoscapePopper from 'cytoscape-popper';
 import AutomataDataService from '../services/automata';
 import { generatePDF } from "../services/generatePDF";
+import { newAutomaton } from '../services/newAutomaton';
+
 import AddEdgeModal from './AddEdgeModal';
 import ControlButtons from './ControlButtons';
 import Tape from './Tape';
 import stylesheet from './automata_stylesheet';
 import './AutomatonEditor.css';
 
-function AutomatonEditor() {
+function AutomatonEditor({user, type}) {
   let params = useParams();
   const cyRef = useRef(null);
   const loaded = useRef(false);
@@ -49,6 +51,10 @@ function AutomatonEditor() {
 
   // Retrieve Automaton from database
   useEffect(() => {
+    if (params.id === 'newtm') {
+      setAutomaton(newAutomaton(user, type));
+      return;
+    }
     const getAutomaton = id => {
       AutomataDataService.get(id)
       .then(response => {
@@ -98,11 +104,12 @@ function AutomatonEditor() {
         cy.on('drag', 'node', function (e) {
           var node = e.target;
           node.removeClass('toDelete');
-
-          if ((!cy.edges()[cy.edges().length-1].data().label)||
-          (cy.edges()[cy.edges().length-1].data().label == ":")||
-          (cy.edges()[cy.edges().length-1].data().label.match("null"))) {
-            cy.remove(cy.edges()[cy.edges().length-1])
+          if (cy.edges().length > 0 && (
+              (!cy.edges()[cy.edges().length-1].data().label)||
+              (cy.edges()[cy.edges().length-1].data().label == ":")||
+              (cy.edges()[cy.edges().length-1].data().label.match("null")))
+            ) {
+                 cy.remove(cy.edges()[cy.edges().length-1])
           }
 
           removeHandle();
@@ -488,10 +495,11 @@ function AutomatonEditor() {
 
         cy.on('zoom pan', function(){
           // If new edge doesn't have a label, its incomplete, scrub it
-          if ((!cy.edges()[cy.edges().length-1].data().label)||
-              (cy.edges()[cy.edges().length-1].data().label == ":")||
-              (cy.edges()[cy.edges().length-1].data().label.match("null"))) {
-            cy.remove(cy.edges()[cy.edges().length-1])
+          if (cy.edges().length > 0 && (
+                (!cy.edges()[cy.edges().length-1].data().label)||
+                (cy.edges()[cy.edges().length-1].data().label == ":")||
+                (cy.edges()[cy.edges().length-1].data().label.match("null")))) {
+              cy.remove(cy.edges()[cy.edges().length-1])
           }
 
           removeHandle();
@@ -499,7 +507,8 @@ function AutomatonEditor() {
         });
 
         cy.on('ehstart', function(){
-          if (!cy.edges()[cy.edges().length-1].data().label) {
+          if (cy.edges().length > 0 &&
+            (!cy.edges()[cy.edges().length-1].data().label)) {
             cy.remove(cy.edges()[cy.edges().length-1])
           }
           started = true;
