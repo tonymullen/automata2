@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav, Dropdown } from "react-bootstrap";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
@@ -29,6 +29,21 @@ function App() {
 
   const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    let loginData = JSON.parse(localStorage.getItem("login"));
+    if (loginData) {
+      let loginExp = loginData.exp;
+      let now = Date.now()/1000;
+      if (now < loginExp) {
+        // Not expired
+        setUser(loginData);
+      } else {
+        // Expired
+        localStorage.setItem("login", null);
+      }
+    }
+  }, []);
+
   return (
     <Router>
       <GoogleOAuthProvider clientId={clientId}>
@@ -40,6 +55,18 @@ function App() {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
+            <Dropdown>
+              <Dropdown.Toggle variant="secondary" id="create-automaton"
+                        className="create-button">
+                Create
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1">Finite State Automaton (FSA)</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Pushdown Automaton (PDA)</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Turing Machine (TM)</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
               {/* <Nav className="ml-auto">
                 <Nav.Link as={Link} to="/automata">
                   Automata
@@ -51,6 +78,7 @@ function App() {
                   </Nav.Link>
                 }
               </Nav> */}
+
             </Navbar.Collapse>
             { user ? (
                 <Logout setUser={setUser}/>

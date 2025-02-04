@@ -28,6 +28,8 @@ function Login({ setUser }) {
           cookiePolicy={'single_host_origin'}
           style={{ marginTop: '100px' }}
           isSignedIn={true}
+          theme='filled_black'
+          text='continue_with'
           auto_select={true}
       />
     </div>

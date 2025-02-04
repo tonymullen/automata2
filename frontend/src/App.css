@@ -130,3 +130,15 @@ th {
   /* Firefox */
   -ms-user-select: none;
   /* IE/Edge */ }
+
+
+.create-button {
+  background-color: darkslategray;
+  border-color: white;
+  border-width: 1pt;
+}
+
+.navbar-brand {
+  font-size: 2em;
+  font-weight: bold;
+}
