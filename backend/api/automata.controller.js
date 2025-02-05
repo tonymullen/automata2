@@ -58,10 +58,11 @@ export default class AutomataController {
   }
 
   static async apiAddAutomaton(req, res, next) {
+    console.log(req.body.automaton);
     try {
       const automaton = req.body.automaton;
       const userInfo = {
-        name: req.body.name,
+        // name: req.body.name,
         _id: req.body.user_id,
       }
 

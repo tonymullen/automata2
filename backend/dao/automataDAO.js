@@ -71,11 +71,12 @@ export default class AutomataDAO {
   static async addAutomaton(user, automaton, date) {
     try {
       const automatonDoc = {
-        name: user.name,
-        user_id: user._id,
+        // name: user.name,
+        user: user._id,
         date: date,
         automaton: automaton
       }
+      console.log("Inserting automaton doc")
       return await automata.insertOne(automatonDoc);
     } catch(e) {
       console.error(`Unable to create automaton: ${e}`);

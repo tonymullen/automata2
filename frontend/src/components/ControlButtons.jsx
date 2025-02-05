@@ -4,7 +4,8 @@ import './ControlButtons.css';
 
 
 function ControlButtons({
-    createPDF
+    createPDF,
+    saveAutomaton
 }) {
 
     return (
@@ -20,7 +21,8 @@ function ControlButtons({
             </div>
             <div className="saveIcon" ng-hide="vm.automaton.demo">
                 <span className="saveIcon glyphicon glyphicon-cloud-upload"
-                    ng-click="vm.save(true)"  ng-hide="vm.authentication.user;">
+                    ng-click="vm.save(true)"  ng-hide="vm.authentication.user;"
+                    onClick={saveAutomaton}>
                 </span>
                 {/* <span className="saveIcon logInToSave" ng-show="vm.authentication.user;">
                     Log in first to<br/>enable saving

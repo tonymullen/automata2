@@ -52,7 +52,8 @@ function AutomatonEditor({user, type}) {
   // Retrieve Automaton from database
   useEffect(() => {
     if (params.id === 'newtm') {
-      setAutomaton(newAutomaton(user, type));
+      console.log(user);
+      setAutomaton(newAutomaton(user, 'tm'));
       return;
     }
     const getAutomaton = id => {
@@ -65,7 +66,7 @@ function AutomatonEditor({user, type}) {
       });
     }
     getAutomaton(params.id)
-  }, [params.id]);
+  }, [params.id, user]);
 
   // Set up listeners and Cytoscape stuff
   // on automaton
@@ -598,6 +599,23 @@ function AutomatonEditor({user, type}) {
     generatePDF("cy", automaton.title);
   });
 
+  const saveAutomaton = useCallback(() => {
+    console.log(automaton);
+    console.log(user);
+    AutomataDataService.createAutomaton({
+      //'name': automaton.title,
+      'user_id': user.googleId,
+      'automaton': automaton
+    })
+      .then(response => {
+        console.log("Saved");
+        // setAutomaton(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  });
+
   return (
     <div className="automaton-editor">
       {/* <button onClick={openTapeModal}>Open Popup</button> */}
@@ -612,7 +630,9 @@ function AutomatonEditor({user, type}) {
         updateAutomaton={updateAutomatonEdges}
         readAlphabet={selectableReadAlphabet}
         actionAlphabet={selectableActionAlphabet}/>
-      <ControlButtons createPDF={createPDF}/>
+      <ControlButtons
+        createPDF={createPDF}
+        saveAutomaton={saveAutomaton}/>
       <CytoscapeComponent
         id="cy"
         zoom={1}

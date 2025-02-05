@@ -55,18 +55,19 @@ function App() {
             </Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="responsive-navbar-nav">
+              {user && (
             <Dropdown>
               <Dropdown.Toggle variant="secondary" id="create-automaton"
                         className="create-button">
                 Create
               </Dropdown.Toggle>
-
               <Dropdown.Menu>
-                <Dropdown.Item href="#/action-1">Finite State Automaton (FSA)</Dropdown.Item>
+                <Dropdown.Item href="/automata/newtm">Finite State Automaton (FSA)</Dropdown.Item>
                 <Dropdown.Item href="#/action-2">Pushdown Automaton (PDA)</Dropdown.Item>
                 <Dropdown.Item href="#/action-3">Turing Machine (TM)</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            )}
               {/* <Nav className="ml-auto">
                 <Nav.Link as={Link} to="/automata">
                   Automata
@@ -95,7 +96,7 @@ function App() {
             <AutomataList/>}
           /> */}
           <Route path="/automata/:id" element={
-            <AutomatonEditor/>}
+            <AutomatonEditor user={user}/>}
           />
           <Route path="/automaton_test" element={
             <AutomatonEditor/>}
