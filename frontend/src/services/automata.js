@@ -32,6 +32,8 @@ class AutomataDataService {
   }
 
   updateAutomaton(data) {
+    console.log(`${API_BASE_URL}/api/v1/automata`);
+    console.log(data);
     return axios.put(`${API_BASE_URL}/api/v1/automata`, data);
   }
 

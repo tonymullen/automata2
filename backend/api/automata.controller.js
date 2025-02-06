@@ -58,30 +58,23 @@ export default class AutomataController {
   }
 
   static async apiAddAutomaton(req, res, next) {
-    console.log(req.body.automaton);
     try {
-      const automaton = req.body.automaton;
-      const userInfo = {
-        // name: req.body.name,
-        _id: req.body.user_id,
-      }
-
+      const automaton = req.body;
       const date = new Date();
 
-      const automatonResponse = await AutomataDAO.addAutomaton(
-        userInfo,
-        automaton,
-        date
-      );
+      const automatonResponse = await AutomataDAO.addAutomaton({
+        'created': date,
+        ...automaton
+      });
 
-      const { error } = reviewResponse;
+      const { error } = automatonResponse;
 
       if (error ) {
         res.status(500).json({ error: "Unable to create automaton" });
       } else {
         res.json({
           status: "success",
-          response: reviewResponse
+          response: automatonResponse
         });
       }
     } catch(e) {
@@ -91,18 +84,33 @@ export default class AutomataController {
 
   static async apiUpdateAutomaton(req, res, next) {
     try {
-      let id = req.params.id || {};
-      let automaton = await AutomataDAO.getAutomatonByID(id);
-      if (!automaton) {
-        res.status(404).json({ error: "Not found" });
-        return;
+      const automaton = req.body;
+      const date = new Date();
+      const automatonResponse = await AutomataDAO.updateAutomaton(
+        {
+          'updated': date,
+          ...automaton
+        }
+      )
+      var { error } = automatonResponse;
+      if (error) {
+        res.status(500).json({ error: `Unable to update automaton. ${e}` });
       }
-      res.json(automaton);
+
+      if (automatonResponse.modifiedCount === 0) {
+        throw new Error(
+          "Unable to update automaton - user may not be original creator."
+        );
+      }
+      res.json({
+        status: "success",
+        response: automatonResponse
+       });
     } catch(e) {
-      console.log(`API, ${e}`);
       res.status(500).json({ error: e });
     }
   }
+
 
   static async apiDeleteAutomaton(req, res, next) {
     try {

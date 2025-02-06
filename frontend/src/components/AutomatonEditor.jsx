@@ -32,8 +32,10 @@ function AutomatonEditor({user, type}) {
   // Establish alphabet for added edges
   const [selectableReadAlphabet, setSelectableReadAlphabet] = useState([]);
   const [selectableActionAlphabet, setSelectableActionAlphabet] = useState([]);
+  const [saveIsUpdate, setSaveIsUpdate] = useState(false);
   const readBaseAlphabet = useRef([]);
   const actionBaseAlphabet = useRef(['→', '←'])
+
 
   // Automaton state
   const [automaton, setAutomaton] = useState({
@@ -51,10 +53,11 @@ function AutomatonEditor({user, type}) {
 
   // Retrieve Automaton from database
   useEffect(() => {
-    if (params.id === 'newtm') {
-      console.log(user);
-      setAutomaton(newAutomaton(user, 'tm'));
+    if (params.id === 'newtm' && user) {
+      setAutomaton(newAutomaton(user.googleId, 'tm'));
       return;
+    } else {
+      setSaveIsUpdate(true);
     }
     const getAutomaton = id => {
       AutomataDataService.get(id)
@@ -600,26 +603,32 @@ function AutomatonEditor({user, type}) {
   });
 
   const saveAutomaton = useCallback(() => {
-    console.log(automaton);
-    console.log(user);
-    AutomataDataService.createAutomaton({
-      //'name': automaton.title,
-      'user_id': user.googleId,
-      'automaton': automaton
-    })
-      .then(response => {
-        console.log("Saved");
-        // setAutomaton(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    if (saveIsUpdate) {
+      console.log("Updating")
+      AutomataDataService.updateAutomaton(automaton)
+        .then(response => {
+          console.log("Saved");
+          // setAutomaton(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    } else {
+      console.log("creating");
+      AutomataDataService.createAutomaton(automaton)
+        .then(response => {
+          console.log("Saved");
+          // setAutomaton(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   });
 
   return (
     <div className="automaton-editor">
       {/* <button onClick={openTapeModal}>Open Popup</button> */}
-      {/* <button onClick={createPDF}>create pdf</button> */}
       <Tape
         isOpen={isTapeModalOpen}/>
       <AddEdgeModal

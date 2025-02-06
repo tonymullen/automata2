@@ -17,96 +17,82 @@ export default class AutomataDAO {
     }
   }
 
-  static async getAutomata({
-    filters = null,
-    page = 0,
-    automataPerPage = 20,
-  } = {}) { // empty object as default value
-    let query;
-    if (filters) {
-      if ('title' in filters) {
-        query = { $text: { $search: filters['title'] } };
-      } else if ('rated' in filters) {
-        query = { 'rated': { $eq: filters['rated'] } };
-      }
-    }
+  // static async getAutomata({
+  //   filters = null,
+  //   page = 0,
+  //   automataPerPage = 20,
+  // } = {}) { // empty object as default value
+  //   let query;
+  //   if (filters) {
+  //     if ('title' in filters) {
+  //       query = { $text: { $search: filters['title'] } };
+  //     } else if ('rated' in filters) {
+  //       query = { 'rated': { $eq: filters['rated'] } };
+  //     }
+  //   }
 
-    let cursor;
-    try {
-      cursor = await automata.find(query)
-                           .limit(automataPerPage)
-                           .skip(automataPerPage * page);
-      const automataList = await cursor.toArray();
-      const totalNumAutomata = await automata.countDocuments(query);
-      return { automataList, totalNumAutomata };
-    } catch (e) {
-      console.error(`Unable to get automaton: ${e}`);
-      return { automataList: [], totalNumAutomata: 0 };
-    }
-  }
+  //   let cursor;
+  //   try {
+  //     cursor = await automata.find(query)
+  //                          .limit(automataPerPage)
+  //                          .skip(automataPerPage * page);
+  //     const automataList = await cursor.toArray();
+  //     const totalNumAutomata = await automata.countDocuments(query);
+  //     return { automataList, totalNumAutomata };
+  //   } catch (e) {
+  //     console.error(`Unable to get automaton: ${e}`);
+  //     return { automataList: [], totalNumAutomata: 0 };
+  //   }
+  // }
 
   static async getAutomatonByID(id) {
+    console.log("getting")
     try {
-      return await automata.aggregate([
-        {
-          $match: {
-            _id: new ObjectId(id),
-          }
-        },
-        {
-          $lookup: {
-            from: 'reviews',
-            localField: '_id',
-            foreignField: 'movie_id',
-            as: 'reviews',
-        }
-      }
-      ]).next();
+      // return await automata.findOne({ "_id": new ObjectId(id)});
+      return await automata.findOne({
+        "_id": ObjectId.createFromHexString(id)
+      });
     } catch (e) {
       console.error(`Unable to get automaton by ID: ${e}`);
       throw e;
     }
   }
 
-  static async addAutomaton(user, automaton, date) {
+  static async addAutomaton(automaton) {
     try {
-      const automatonDoc = {
-        // name: user.name,
-        user: user._id,
-        date: date,
-        automaton: automaton
-      }
-      console.log("Inserting automaton doc")
-      return await automata.insertOne(automatonDoc);
+      return await automata.insertOne(automaton);
     } catch(e) {
       console.error(`Unable to create automaton: ${e}`);
       return { error: e };
     }
   }
 
-  static async updateAutomaton(automatonId, userId, automaton, date) {
+  static async updateAutomaton(automaton) {
     try {
-      const updateResponse = await automata.updateOne(
-        { user_id: userId, _id: new ObjectId(automatonId) },
-        { $set: { automaton: automaton, date: date } }
+      const newAutomaton = { ...automaton };
+      delete newAutomaton._id;
+      const updateResponse = await automata.replaceOne(
+        { user: automaton.user,
+          _id: ObjectId.createFromHexString(automaton._id) },
+        newAutomaton
       );
       return updateResponse;
-    } catch(e) {
+    } catch (e) {
       console.error(`Unable to update automaton: ${e}`);
       return { error: e };
     }
   }
 
-  static async deleteAutomaton(automatonId, userId) {
-    try {
-      const deleteResponse = await automata.deleteOne({
-        _id: new ObjectId(automatonId),
-        user_id: userId,
-      });
-      return deleteResponse;
-    } catch(e) {
-      console.error(`Unable to delete automaton: ${e}`);
-      return { error: e };
-    }
-  }
+  // static async deleteAutomaton(automatonId, userId) {
+  //   try {
+  //     const deleteResponse = await automata.deleteOne({
+  //       _id: new ObjectId(automatonId),
+  //       user_id: userId,
+  //     });
+  //     return deleteResponse;
+  //   } catch(e) {
+  //     console.error(`Unable to delete automaton: ${e}`);
+  //     return { error: e };
+  //   }
+  // }
 }

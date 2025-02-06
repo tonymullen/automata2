@@ -7,9 +7,9 @@ router.route('/')
     .get(AutomataController.apiGetAutomata)
     .post(AutomataController.apiAddAutomaton)
     .put(AutomataController.apiUpdateAutomaton)
-    .delete(AutomataController.apiDeleteAutomaton);
+    // .delete(AutomataController.apiDeleteAutomaton);
 router.route('/id/:id').get(AutomataController.apiGetAutomatonById);
-router.route("/idList/:idList").get(AutomataController.apiGetAutomataByIdList);
+// router.route("/idList/:idList").get(AutomataController.apiGetAutomataByIdList);
 
 
 export default router;
