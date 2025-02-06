@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import CytoscapeComponent from 'react-cytoscapejs';
 import cytoscape from 'cytoscape';
 import cxtmenu from 'cytoscape-cxtmenu';
@@ -16,7 +16,8 @@ import stylesheet from './automata_stylesheet';
 import './AutomatonEditor.css';
 
 function AutomatonEditor({user, type}) {
-  let params = useParams();
+  const navigate = useNavigate();
+  const params = useParams();
   const cyRef = useRef(null);
   const loaded = useRef(false);
 
@@ -32,7 +33,7 @@ function AutomatonEditor({user, type}) {
   // Establish alphabet for added edges
   const [selectableReadAlphabet, setSelectableReadAlphabet] = useState([]);
   const [selectableActionAlphabet, setSelectableActionAlphabet] = useState([]);
-  const [saveIsUpdate, setSaveIsUpdate] = useState(false);
+  const [save, setSave] = useState(null);
   const readBaseAlphabet = useRef([]);
   const actionBaseAlphabet = useRef(['→', '←'])
 
@@ -53,22 +54,25 @@ function AutomatonEditor({user, type}) {
 
   // Retrieve Automaton from database
   useEffect(() => {
-    if (params.id === 'newtm' && user) {
-      setAutomaton(newAutomaton(user.googleId, 'tm'));
-      return;
-    } else {
-      setSaveIsUpdate(true);
+    if (user) {
+      if (params.id === 'newtm') {
+        setAutomaton(newAutomaton(user.googleId, 'tm'));
+        setSave('create');
+        return;
+      } else {
+        setSave('update');
+        const getAutomaton = id => {
+          AutomataDataService.get(id)
+          .then(response => {
+            setAutomaton(response.data);
+          })
+          .catch(e => {
+            console.log(e);
+          });
+        }
+        getAutomaton(params.id)
+      }
     }
-    const getAutomaton = id => {
-      AutomataDataService.get(id)
-      .then(response => {
-        setAutomaton(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }
-    getAutomaton(params.id)
   }, [params.id, user]);
 
   // Set up listeners and Cytoscape stuff
@@ -116,6 +120,7 @@ function AutomatonEditor({user, type}) {
                  cy.remove(cy.edges()[cy.edges().length-1])
           }
 
+          updateNodeLocation(e.target);
           removeHandle();
           closeAddEdgeModal();
 
@@ -135,6 +140,14 @@ function AutomatonEditor({user, type}) {
 
         cy.on('taphold', 'edge', function (e) {
           doTapHold(e);
+        });
+
+        cy.on('remove', 'edge', function(e) {
+          let idToDel = e.target.data().id;
+          console.log(automaton.eles.edges);
+          automaton.eles.edges = automaton.eles.edges.filter(
+            (e) => !(e.data.id === idToDel),
+          );
         });
 
         cy.on('vmousedown', function (e) {
@@ -198,11 +211,20 @@ function AutomatonEditor({user, type}) {
 
         function doMouseUp(e) {
           let element = e.target;
+          let idToDel = e.target.data().id;
           clickstop = e.timeStamp - clickstart;
           // Delete a node after long mouse press
           if (clickstop >= 750 && element.hasClass('toDelete')) {
             resetElementColors();
             cy.remove('.toDelete');
+            // delete corresponding model element
+            automaton.eles.nodes = automaton.eles.nodes.filter(
+              (n) => !(n.data.id === idToDel),
+            );
+            automaton.eles.edges = automaton.eles.edges.filter(
+              (e) => !(e.data.id === idToDel),
+            );
+
             var deleted = element.data('label');
             // Update labels for nodes after deletion
             if (del && element.isNode() && element.hasClass('nnode')) {
@@ -583,8 +605,11 @@ function AutomatonEditor({user, type}) {
   });
 
   const updateAutomatonNodes = useCallback((cy_node)=>{
+    console.log(cy_node);
     let newNode = {
-      data: cy_node.data()
+      data: cy_node.data(),
+      position: cy_node.position(),
+      classes: cy_node.classes(),
     }
     setAutomaton({
       ...automaton,
@@ -598,27 +623,33 @@ function AutomatonEditor({user, type}) {
     })
   });
 
-  const createPDF = useCallback(() => {
+  const updateNodeLocation = useCallback((cy_node)=>{
+    automaton.eles.nodes.forEach(n=>{
+      if (n.data.id === cy_node.data().id) {
+        n.position = cy_node.position();
+      }
+    });
+  });
+
+  const createPDF = useCallback(()=>{
     generatePDF("cy", automaton.title);
   });
 
-  const saveAutomaton = useCallback(() => {
-    if (saveIsUpdate) {
-      console.log("Updating")
+  const saveAutomaton = useCallback(()=>{
+    if (save==='update') {
       AutomataDataService.updateAutomaton(automaton)
         .then(response => {
-          console.log("Saved");
           // setAutomaton(response.data);
         })
         .catch(e => {
           console.log(e);
         });
-    } else {
-      console.log("creating");
+    } else if (save==='create') {
       AutomataDataService.createAutomaton(automaton)
         .then(response => {
-          console.log("Saved");
+          console.log(response.data.response.insertedId);
           // setAutomaton(response.data);
+          navigate(`/automata/${response.data.response.insertedId}`);
         })
         .catch(e => {
           console.log(e);
