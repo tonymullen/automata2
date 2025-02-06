@@ -1,13 +1,19 @@
 import Glyphicon from '@strongdm/glyphicon'
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
 import "../assets/fonts/automaton-icons/fonts/automaton-icons.ttf";
 import './ControlButtons.css';
 
 
 function ControlButtons({
     createPDF,
-    saveAutomaton
+    saveAutomaton,
+    automatonTitle,
+    setAutomatonTitle
 }) {
-
+    const handleChange = (e, setFn) => {
+        setFn(e.target.value);
+    };
     return (
         <div className="controller-buttons">
             <div className="playIcons noSelect">
@@ -35,13 +41,22 @@ function ControlButtons({
                   onClick={createPDF}></span>
             </div>
 
-            <span className="automaton_title" ng-if="!vm.automaton.demo && vm.authentication.user">
+            {/* <span className="automaton_title" ng-if="!vm.automaton.demo && vm.authentication.user">
             <a href="#"  editable-text="vm.automaton.title" my-onaftersave="vm.save(true)">
                 Automaton title
             </a>
             </span>
             <span className="automaton_title" ng-if="vm.automaton.demo || !vm.authentication.user">
                 Automaton title
+            </span> */}
+            <span className="automaton_title">
+            <EditText
+              name="textbox1"
+              className="automaton_title"
+              defaultValue={automatonTitle}
+              value={automatonTitle}
+              onChange={(e) => handleChange(e, setAutomatonTitle)}
+            />
             </span>
         </div>
     );

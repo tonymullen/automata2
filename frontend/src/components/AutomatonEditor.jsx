@@ -635,6 +635,14 @@ function AutomatonEditor({user, type}) {
     generatePDF("cy", automaton.title);
   });
 
+  const setAutomatonTitle = useCallback((text)=>{
+    console.log("Setting title: ", text);
+    setAutomaton({
+      ...automaton,
+      "title": text
+    })
+  });
+
   const saveAutomaton = useCallback(()=>{
     if (save==='update') {
       AutomataDataService.updateAutomaton(automaton)
@@ -648,7 +656,6 @@ function AutomatonEditor({user, type}) {
       AutomataDataService.createAutomaton(automaton)
         .then(response => {
           console.log(response.data.response.insertedId);
-          // setAutomaton(response.data);
           navigate(`/automata/${response.data.response.insertedId}`);
         })
         .catch(e => {
@@ -672,7 +679,9 @@ function AutomatonEditor({user, type}) {
         actionAlphabet={selectableActionAlphabet}/>
       <ControlButtons
         createPDF={createPDF}
-        saveAutomaton={saveAutomaton}/>
+        saveAutomaton={saveAutomaton}
+        automatonTitle={automaton.title}
+        setAutomatonTitle={setAutomatonTitle}/>
       <CytoscapeComponent
         id="cy"
         zoom={1}
