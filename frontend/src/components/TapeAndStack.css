@@ -1,0 +1,67 @@
+/* Overlay to cover the entire viewport with a semi-transparent background */
+.float-overlay {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+}
+
+/* Popup container styling */
+.float {
+    z-index: 100;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 750px;
+    position: relative;
+}
+
+/* Draggable header area */
+.float-header {
+    cursor: grab; /* Indicates that the element is draggable */
+    background: darkslategray;
+    padding: 7px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+/* Content area of the popup */
+.float-content {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    background-color: rgba(255,255,255,0.3);
+}
+
+.tape-contents {
+    background-color: white;
+    border: solid gray 2px;
+}
+
+.tape-cell {
+    border-right: solid gray 2px;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 2em;
+    display: inline-block
+}
+
+.tape-cell.active {
+    background-color: black;
+    color: white;
+}
+
+.tape-top.active {
+    background-color: black;
+    height: 10px;
+    width: 32px;
+    border-radius: 10px;
+    display: inline-block
+}

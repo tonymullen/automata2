@@ -1,5 +1,5 @@
 export function newAutomaton(user, type) {
-    return ({
+    const machine = {
         'user': user,
         'machine': type,
         'title': 'Untitled',
@@ -28,5 +28,25 @@ export function newAutomaton(user, type) {
                 }
             }]
         }
-    })
+    }
+    if (type=='tm') {
+        machine.tape = {
+            indexPos: 0,
+            position: {
+                'x': -100,
+                'y': 125
+            },
+            contents: []}
+    }
+    if (type=='pda') {
+        machine.stack = {
+            position: {
+                'x': -395,
+                'y': 150
+            },
+            contents: []
+        }
+    }
+
+    return machine;
 }

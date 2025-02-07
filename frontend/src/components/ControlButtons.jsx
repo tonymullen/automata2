@@ -41,20 +41,13 @@ function ControlButtons({
                   onClick={createPDF}></span>
             </div>
 
-            {/* <span className="automaton_title" ng-if="!vm.automaton.demo && vm.authentication.user">
-            <a href="#"  editable-text="vm.automaton.title" my-onaftersave="vm.save(true)">
-                Automaton title
-            </a>
-            </span>
-            <span className="automaton_title" ng-if="vm.automaton.demo || !vm.authentication.user">
-                Automaton title
-            </span> */}
             <span className="automaton_title">
             <EditText
               name="textbox1"
               className="automaton_title"
               defaultValue={automatonTitle}
               value={automatonTitle}
+              inputClassName='title-box'
               onChange={(e) => handleChange(e, setAutomatonTitle)}
             />
             </span>

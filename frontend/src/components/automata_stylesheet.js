@@ -20,7 +20,15 @@ const stylesheet = [
       style: {
         'overlay-opacity': 0
       }
-    },{
+    },
+    {
+      selector: '.accept',
+      style: {
+        'border-style': 'double',
+        'border-width': '9px'
+      }
+    },
+    {
       selector: '.toDelete',
       style: {
         'overlay-color': 'red',

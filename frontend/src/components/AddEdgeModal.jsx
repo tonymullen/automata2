@@ -16,21 +16,30 @@ const AddEdgeModal = ({
   position,
   updateAutomaton,
   readAlphabet,
-  actionAlphabet
+  actionAlphabet,
+  machineType
 }) => {
   const [selectedValue, setSelectedValue] = useState("⌄");
   const [read, setRead] = useState(null);
   const [action, setAction] = useState(null);
 
   const finalizeEdge = useCallback(() => {
-    edgeToAdd.data('read', read);
-    edgeToAdd.data('action', action);
-    edgeToAdd.data('label', read+':'+action);
-    updateAutomaton(edgeToAdd);
-    setSelectedValue("⌄");
-    setRead(null);
-    setAction(null);
-    onClose();
+    if (machineType === 'tm') {
+      edgeToAdd.data('read', read);
+      edgeToAdd.data('action', action);
+      edgeToAdd.data('label', read+':'+action);
+      updateAutomaton(edgeToAdd);
+      setSelectedValue("⌄");
+      setRead(null);
+      setAction(null);
+    } else if (machineType === 'fsa') {
+      edgeToAdd.data('read', read);
+      edgeToAdd.data('label', read);
+      updateAutomaton(edgeToAdd);
+      setSelectedValue("⌄");
+      setRead(null);
+    }
+  onClose();
   });
 
   const handleSelectRead = (event) => {
@@ -52,18 +61,22 @@ const AddEdgeModal = ({
         >
           <div className="aem-popup-content noSelect">
             <div className="edgeLabelDropdowns noSelect">
-              <div className="edgeLabelDropdown noSelect">
-                <select className="edgeLabelSymbolInput edgeLabelSelect
-                                  noSelect form-select-sm" aria-label=".form-select-sm
-                                  example" defaultValue={selectedValue}
-                                  onChange={handleSelectRead}>
-                  <option value={selectedValue} disabled={true}>⌄</option>
-                  {readAlphabet.map(function(item, i){
-                    return <option value={item} key={i}>{item}</option>
-                  })}
-                </select>
-            </div>
-            <span className="edgeLabelSymbolInput">:</span>
+                <div className="edgeLabelDropdown noSelect">
+                  <select className="edgeLabelSymbolInput edgeLabelSelect
+                                    noSelect form-select-sm" aria-label=".form-select-sm
+                                    example" defaultValue={selectedValue}
+                                    onChange={handleSelectRead}>
+                    <option value={selectedValue} disabled={true}>⌄</option>
+                    {readAlphabet.map(function(item, i){
+                      return <option value={item} key={i}>{item}</option>
+                    })}
+                  </select>
+              </div>
+
+            { machineType === 'tm' &&
+              <span className="edgeLabelSymbolInput">:</span>
+            }
+            { machineType === 'tm' &&
               <div className="edgeLabelDropdown">
                 <select className="edgeLabelSymbolInput edgeLabelSelect
                                   form-select-sm" aria-label=".form-select-sm
@@ -74,15 +87,17 @@ const AddEdgeModal = ({
                     return <option value={item} key={i}>{item}</option>
                   })}
                 </select>
-              </div>
+            </div>
+            }
           </div>
           <Button className="add-edge-okay"
                   onClick={finalizeEdge}
                   variant="light"
-                  disabled={read===null||action===null}>OK</Button>
-          {/* <button className="add-edge-okay" onClick={finalizeEdge}>
-            OK
-          </button> */}
+                  disabled={
+                    (machineType === 'tm' && (read===null||action===null))
+                    ||
+                    (read===null)
+                    }>OK</Button>
           </div>
       </div>
   );

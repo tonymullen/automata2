@@ -4,12 +4,14 @@ import "./TapeAndStack.css";
 
 const Tape = ({
   isOpen,
-  contents,
-  indexPos,
-  pos
+  onClose,
+  children,
 }) => {
   const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState(pos);
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
+  });
 
   // Ref to store the initial mouse position when dragging starts
   const startPos = useRef({ x: 0, y: 0 });
@@ -35,6 +37,7 @@ const Tape = ({
 
   // Function to handle the start of a drag event
   const onMouseDown = e => {
+    console.log("MOUSEDOWN");
     e.stopPropagation();
     setIsDragging(true);
     startPos.current = {
@@ -52,16 +55,17 @@ const Tape = ({
     };
   }, [onMouseMove]);
 
-   useEffect(() => {
-    console.log("Tape's position:")
-    console.log(position);
-  }, [position]);
+  // Reset position when the popup is closed
+  useEffect(() => {
+    if (!isOpen) {
+      setPosition({ x: 0, y: 0 });
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
   return (
-    <div>
-    <div className="float-overlay">
-      <div className="float"
+    <div className="popup-overlay" onClick={onClose}>
+      <div className="popup"
         ref={popupRef}
         onClick={e => {
           console.log("Click");
@@ -69,22 +73,15 @@ const Tape = ({
         }} //to prevent event delegation to the overlay
         style={{transform: `translate(${position.x}px, ${position.y}px)`}}
         >
-      <div className="float-header" onMouseDown={onMouseDown}>
+      <div className="popup-header" onMouseDown={onMouseDown}>
+        <button className="popup-close" onClick={onClose}>
+          Close
+        </button>
       </div>
-        <div className="float-content">
-          <div className="tape-tops">
-            <div className="tape-top active"></div>
-            <div className="tape-top"></div>
-            <div className="tape-top"></div>
-          </div>
-          <div className="tape-contents">
-            <div className="tape-cell active">A</div>
-            <div className="tape-cell">B</div>
-            <div className="tape-cell">C</div>
-          </div>
+        <div className="popup-content">
+          Tape
         </div>
       </div>
-    </div>
     </div>
   );
 };

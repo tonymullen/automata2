@@ -12,6 +12,7 @@ import { newAutomaton } from '../services/newAutomaton';
 import AddEdgeModal from './AddEdgeModal';
 import ControlButtons from './ControlButtons';
 import Tape from './Tape';
+import Stack from './Stack';
 import stylesheet from './automata_stylesheet';
 import './AutomatonEditor.css';
 
@@ -58,7 +59,12 @@ function AutomatonEditor({user, type}) {
       if (params.id === 'newtm') {
         setAutomaton(newAutomaton(user.googleId, 'tm'));
         setSave('create');
-        return;
+      } else if (params.id === 'newfsa') {
+        setAutomaton(newAutomaton(user.googleId, 'fsa'));
+        setSave('create');
+      } else if (params.id === 'newpda') {
+        setAutomaton(newAutomaton(user.googleId, 'pda'));
+        setSave('create');
       } else {
         setSave('update');
         const getAutomaton = id => {
@@ -319,6 +325,32 @@ function AutomatonEditor({user, type}) {
               });
             }
           }
+          automaton.eles.nodes.forEach(n=>{
+            if(n.data.id === node.data().id) {
+              n.classes = node.classes();
+            }
+          });
+        }
+
+        if (automaton.machine !== 'tm') { // accept states only for FSAs and PDAs
+          cy.on('click', 'node', function (e) {
+            var node = e.target;
+            if (!node.hasClass('submachine')) {
+              toggleAccept(node);
+            } else {
+              editSubmachine(node);
+            }
+          });
+
+          cy.on('doubleTap', function (e) {
+            var node = e.target;
+            if (!node.hasClass('submachine')) {
+              toggleAccept(node);
+            } else {
+              editSubmachine(node);
+            }
+            node.trigger('mouseout');
+          });
         }
 
         var menuDefaults = {
@@ -373,8 +405,8 @@ function AutomatonEditor({user, type}) {
                 }// `ele` holds the reference to the active element
                 // necessary hack to ensure that newly created
                 // nodes don't flicker. Toggles accept state on start state
-                toggleAccept(cy.nodes().eq(1));
-                toggleAccept(cy.nodes().eq(1));
+                // toggleAccept(cy.nodes().eq(1));
+                // toggleAccept(cy.nodes().eq(1));
               }
             }
           ], // function ( ele ){ return [  ] }, // example function for commands
@@ -666,9 +698,15 @@ function AutomatonEditor({user, type}) {
 
   return (
     <div className="automaton-editor">
-      {/* <button onClick={openTapeModal}>Open Popup</button> */}
+      { automaton.tape.position &&
       <Tape
-        isOpen={isTapeModalOpen}/>
+        isOpen={automaton.machine === 'tm'}
+        contents={automaton.tape.contents}
+        indexPos={automaton.tape.indexPos}
+        pos={automaton.tape.position}/>
+      }
+      <Stack
+        isOpen={automaton.machine === 'pda'}/>
       <AddEdgeModal
         isOpen={isAddEdgeModalOpen}
         onClose={closeAddEdgeModalAndAddEdge}
@@ -676,7 +714,8 @@ function AutomatonEditor({user, type}) {
         position={edgeToAddPosition}
         updateAutomaton={updateAutomatonEdges}
         readAlphabet={selectableReadAlphabet}
-        actionAlphabet={selectableActionAlphabet}/>
+        actionAlphabet={selectableActionAlphabet}
+        machineType={automaton.machine}/>
       <ControlButtons
         createPDF={createPDF}
         saveAutomaton={saveAutomaton}

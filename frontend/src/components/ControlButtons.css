@@ -119,3 +119,8 @@ div.playIcons {
   position: relative;
   top: -3px;
 }
+
+.title-box {
+  background-color:rgba(255,255,255, 0.3);
+  outline: none;
+}

@@ -46,7 +46,6 @@ export default class AutomataDAO {
   // }
 
   static async getAutomatonByID(id) {
-    console.log("getting")
     try {
       // return await automata.findOne({ "_id": new ObjectId(id)});
       return await automata.findOne({

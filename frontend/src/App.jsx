@@ -62,9 +62,9 @@ function App() {
                 Create
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item href="/automata/newtm">Finite State Automaton (FSA)</Dropdown.Item>
-                <Dropdown.Item href="#/action-2">Pushdown Automaton (PDA)</Dropdown.Item>
-                <Dropdown.Item href="#/action-3">Turing Machine (TM)</Dropdown.Item>
+                <Dropdown.Item href="/automata/newfsa">Finite State Automaton (FSA)</Dropdown.Item>
+                <Dropdown.Item href="/automata/newpda">Pushdown Automaton (PDA)</Dropdown.Item>
+                <Dropdown.Item href="/automata/newtm">Turing Machine (TM)</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
             )}
