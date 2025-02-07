@@ -27,10 +27,8 @@ export function newAutomaton(user, type) {
                     'start': true,
                 }
             }]
-        }
-    }
-    if (type=='tm') {
-        machine.tape = {
+        },
+        'tape': {
             indexPos: 0,
             position: {
                 'x': -100,

@@ -700,7 +700,7 @@ function AutomatonEditor({user, type}) {
     <div className="automaton-editor">
       { automaton.tape.position &&
       <Tape
-        isOpen={automaton.machine === 'tm'}
+        isOpen={true}
         contents={automaton.tape.contents}
         indexPos={automaton.tape.indexPos}
         pos={automaton.tape.position}/>

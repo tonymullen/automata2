@@ -53,8 +53,7 @@ const Tape = ({
   }, [onMouseMove]);
 
    useEffect(() => {
-    console.log("Tape's position:")
-    console.log(position);
+    console.log(contents);
   }, [position]);
 
   if (!isOpen) return null;
@@ -72,15 +71,34 @@ const Tape = ({
       <div className="float-header" onMouseDown={onMouseDown}>
       </div>
         <div className="float-content">
-          <div className="tape-tops">
+          {/* <div className="tape-tops">
             <div className="tape-top active"></div>
             <div className="tape-top"></div>
             <div className="tape-top"></div>
-          </div>
-          <div className="tape-contents">
-            <div className="tape-cell active">A</div>
-            <div className="tape-cell">B</div>
-            <div className="tape-cell">C</div>
+          </div> */}
+          <div className="tape-contents-and-resize">
+            <div className="tape-contents-window">
+              <div className="tape-contents">
+              { contents.map((item, i) =>
+                <div className="tape-cell" key={i}>
+                  <div className="tape-cell-top" key={i}></div>
+                  <div className={"tape-cell-data "+ (i==0 && "tape-cell-data-left")} key={i}>
+                    {item}
+                  </div>
+              </div>
+              )}
+              { Array.apply(' ', Array(30)).map((item, i) =>
+                <div className="tape-cell" key={contents.length+i}>
+                  <div className="tape-cell-top" key={i}></div>
+                  <div className="tape-cell-data" key={contents.length+i}>
+                    {item}
+                  </div>
+                </div>
+              )}
+              </div>
+            </div>
+            <div className="tape-resize-box">
+            </div>
           </div>
         </div>
       </div>
