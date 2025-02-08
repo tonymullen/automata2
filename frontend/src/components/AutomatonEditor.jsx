@@ -705,8 +705,12 @@ function AutomatonEditor({user, type}) {
         indexPos={automaton.tape.indexPos}
         pos={automaton.tape.position}/>
       }
+      { automaton.stack && automaton.stack.position &&
       <Stack
-        isOpen={automaton.machine === 'pda'}/>
+        isOpen={automaton.machine === 'pda'}
+        contents={automaton.stack.contents}
+        pos={automaton.stack.position}/>
+      }
       <AddEdgeModal
         isOpen={isAddEdgeModalOpen}
         onClose={closeAddEdgeModalAndAddEdge}

@@ -21,8 +21,8 @@ function ControlButtons({
                     <span className="auticon-controller-play" onClick={()=>{}}></span>
                     <span className="auticon-controller-fast-forward" onClick={()=>{}}></span>
                     <span className="auticon-controller-step" onClick={()=>{}}></span>
-                    <span className="auticon-controller-pause" onClick={()=>{}}></span>
-                    <span className="auticon-controller-jump-to-start" onClick={()=>{}}></span>
+                    {/* <span className="auticon-controller-pause" onClick={()=>{}}></span>
+                    <span className="auticon-controller-jump-to-start" onClick={()=>{}}></span> */}
                 </span>
             </div>
             <div className="saveIcon" ng-hide="vm.automaton.demo">

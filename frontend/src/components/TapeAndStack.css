@@ -16,7 +16,13 @@
     z-index: 100;
     border-radius: 3px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    /* width: 750px; */
+    position: relative;
+}
+
+.stack-float {
+    z-index: 100;
+    border-radius: 3px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
 }
 
@@ -29,6 +35,14 @@
     border-top-right-radius: 3px;
 }
 
+.stack-float-header {
+    cursor: grab; /* Indicates that the element is draggable */
+    background: darkslategray;
+    padding: 10px;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
 /* Content area of the popup */
 .float-content {
     padding-left: 10px;
@@ -36,6 +50,7 @@
     padding-bottom: 10px;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
+    overflow: scroll;
     /* background-color: rgba(255,255,255,0.3); */
 }
 
@@ -65,6 +80,21 @@
     height: 45px;
     border-top: solid gray 2px;
     border-right: solid gray 2px;
+    border-bottom: solid gray 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 2em;
+    user-select: none;
+}
+
+.stack-cell-data {
+    background-color: white;
+    height: 42px;
+    width: 38px;
+    border-right: solid gray 2px;
+    border-left: solid gray 2px;
     border-bottom: solid gray 2px;
     padding-left: 5px;
     padding-right: 5px;
@@ -108,6 +138,18 @@
     right: 0;
     height: 100%;
     width: 20px;
+    background-color: gray;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.stack-resize-box {
+    cursor: grab; /* Indicates that the element is draggable */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 20px;
+    width: 100%;
     background-color: gray;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;

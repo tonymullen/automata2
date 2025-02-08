@@ -31,18 +31,18 @@ export function newAutomaton(user, type) {
         'tape': {
             indexPos: 0,
             position: {
-                'x': -100,
-                'y': 125
+                'x': 0,
+                'y': 220
             },
-            contents: []}
+            contents: ['A','B','C']}
     }
     if (type=='pda') {
         machine.stack = {
             position: {
-                'x': -395,
-                'y': 150
+                'x': -455,
+                'y': 30
             },
-            contents: []
+            contents: ['A','B','C']
         }
     }
 

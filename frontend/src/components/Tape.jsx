@@ -1,4 +1,3 @@
-// import { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./TapeAndStack.css";
 
@@ -23,14 +22,15 @@ const Tape = ({
   // Function to handle mouse movement while dragging
   const onMouseMove = useCallback(e => {
       if (isDragging) {
+        console.log(position);
         setPosition({
           x: e.clientX - startPos.current.x,
           y: e.clientY - startPos.current.y,
         });
       } else if (isResizing) {
-        setWidth(width + (e.clientX-startPos.current.x+100));
+        setWidth(width + (e.clientX-startPos.current.x+50));
         setPosition({
-          x: position.x + (e.clientX-startPos.current.x+100)/2,
+          x: position.x + (e.clientX-startPos.current.x+50)/2,
           y: position.y
         });
       } else {
@@ -93,26 +93,46 @@ const Tape = ({
           <div className="tape-contents-and-resize">
             <div className="tape-contents-window" style={{width: `${width-30}px`}}>
               <div className="tape-contents">
-              { contents.map((item, i) =>
-                <div className="tape-cell"
-                     key={'cell'+i} onClick={()=>{setIndPos(i)}}>
+
+              <div className="tape-cell"
+                     key={'cell'+0} onClick={()=>{setIndPos(0)}}>
                   <div className={"tape-cell-top " +
-                                  (i==indPos && "active")}
-                      key={'top'+i}></div>
+                                  (0==indPos && "active")}
+                      key={'top'+0}></div>
+                  <div className={
+                                  ("tape-cell-data tape-cell-data-left " +
+                                  (0==indPos && "active"))
+                                }
+                       key={'tapeItem'+0}>
+                    {contents[0]}
+                  </div>
+              </div>
+
+              { contents.slice(1).map((item, i) =>
+                <div className="tape-cell"
+                     key={'cell'+i+1} onClick={()=>{setIndPos(i+1)}}>
+                  <div className={"tape-cell-top " +
+                                  ((i+1)==indPos && "active")}
+                      key={'top'+i+1}></div>
                   <div className={
                                   ("tape-cell-data" + ' ' +
-                                  (i==indPos && "active")) + ' ' +
-                                  (i==0 && "tape-cell-data-left ")
+                                  ((i+1)==indPos && "active"))
                                 }
-                       key={'tapeItem'+i}>
+                       key={'tapeItem'+i+1}>
                     {item}
                   </div>
               </div>
               )}
-              { Array.apply(' ', Array(30)).map((item, i) =>
-                <div className="tape-cell" key={'cell'+contents.length+i}>
-                  <div className="tape-cell-top" key={'top'+contents.length+i}></div>
-                  <div className="tape-cell-data" key={'tapeItem'+contents.length+i}>
+
+              { Array.apply(' ', Array(33)).map((item, i) =>
+                <div className="tape-cell" key={'cell'+contents.length+i}
+                  onClick={()=>{setIndPos(contents.length+i)}}>
+                  <div className={"tape-cell-top " +
+                                  ((contents.length+i)==indPos && "active")}
+                    key={'top'+contents.length+i}></div>
+                  <div className={"tape-cell-data " +
+                                  ((contents.length+i)==indPos && "active")}
+                    key={'tapeItem'+contents.length+i}>
                     {item}
                   </div>
                 </div>
