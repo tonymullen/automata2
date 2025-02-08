@@ -16,7 +16,7 @@
     z-index: 100;
     border-radius: 3px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 750px;
+    /* width: 750px; */
     position: relative;
 }
 
@@ -36,7 +36,7 @@
     padding-bottom: 10px;
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
-    background-color: rgba(255,255,255,0.3);
+    /* background-color: rgba(255,255,255,0.3); */
 }
 
 
@@ -45,28 +45,23 @@
 }
 
 .tape-contents {
-    background-color: white;
-    height: 60px;
+    /* height: 60px; */
     width: 1330px;
     border-bottom: solid gray 2px;
 }
 
 .tape-cell {
+    background-color: transparent;
     text-align: center;
-    display: block;
-    height: 100%;
+    /* display: block; */
+    /* height: 100%; */
     width: 35px;
     float: left;
     position: relative;
 }
 
-.tape-cell-top {
-    background-color :white;
-    height: 15px;
-}
-
 .tape-cell-data {
-    background-color: yellow;
+    background-color: white;
     height: 45px;
     border-top: solid gray 2px;
     border-right: solid gray 2px;
@@ -76,33 +71,44 @@
     padding-bottom: 5px;
     text-align: center;
     font-size: 2em;
+    user-select: none;
 }
 
 .tape-cell-data-left {
     border-left: solid gray 2px;
 }
 
-.tape-cell.active {
+.tape-cell-data.active {
     background-color: black;
     color: white;
 }
 
-.tape-top.active {
-    background-color: black;
+
+.tape-cell-top {
     height: 10px;
     width: 32px;
     border-radius: 10px;
-    display: inline-block
+    display: inline-block;
+    background-color: initial;
+}
+
+.tape-cell-top.active {
+    background-color: black;
 }
 
 .tape-contents-window {
-    width: 700px;
+    /* width: 720px; */
     overflow: scroll;
 }
 
 .tape-resize-box {
-    float: right;
-    height: 50px;
+    cursor: grab; /* Indicates that the element is draggable */
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
     width: 20px;
-    background-color: black;
+    background-color: gray;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
