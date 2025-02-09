@@ -61,6 +61,7 @@
 
 .tape-contents {
     width: 1330px;
+    background-color: white;
 }
 
 .tape-cell {
@@ -86,7 +87,18 @@
     margin: 0;
 }
 
+.tape-cell-data:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+._4GdcU:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
 .stack-cell-data {
+    pointer-events: none;
     background-color: white;
     height: 42px;
     width: 38px;
@@ -153,6 +165,7 @@
 }
 
 .tape-stack-text-edit {
+    pointer-events: none;
     background-color:white;
     font-size: 2em;
     outline: none;
@@ -175,7 +188,7 @@
     margin: 0;
 }
 
-.tape-cell-entry {
+.tape-cell-entry.active {
     background-color: black;
     color: white;
 }

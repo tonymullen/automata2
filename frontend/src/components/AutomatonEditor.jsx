@@ -742,7 +742,7 @@ function AutomatonEditor({user, type}) {
         cy={(cy) => { cyRef.current = cy }}
         style={ { height: '800px' } }
         stylesheet={stylesheet}
-        />;
+        />
     </div>
   );
 }

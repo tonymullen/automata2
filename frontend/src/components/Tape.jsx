@@ -150,12 +150,16 @@ const Tape = ({
                   </div> */}
                   <EditText
                     name={"textbox"+i+1}
-                    className="tape-cell-data "
+                    className={("tape-cell-data " +
+                      ((i+1)==indPos && "active"))
+                     }
                     defaultValue={item}
                     // value={item}
                     // onFocus={handleFocus}
                     onEditMode={handleFocus}
-                    inputClassName='tape-cell-entry'
+                    inputClassName={("tape-cell-entry " +
+                       ((i+1)==indPos && "active"))
+                      }
                     onChange={(e) => handleChange(e, setAutomatonTitle)}
                   />
               </div>
@@ -174,10 +178,14 @@ const Tape = ({
                   </div> */}
                   <EditText
                     name={"textbox"+contents.length+i}
-                    className="tape-cell-data "
+                    className={("tape-cell-data " +
+                      ((contents.length+i)==indPos && "active"))
+                     }
                     defaultValue={item}
                     // value={item}
-                    inputClassName='tape-cell-entry'
+                    inputClassName={("tape-cell-entry " +
+                      ((contents.length+i)==indPos && "active"))
+                     }
                     onChange={(e) => handleChange(e, setAutomatonTitle)}
                   />
                 </div>
