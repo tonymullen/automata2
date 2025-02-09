@@ -73,6 +73,12 @@ const Tape = ({
     };
   }, [onMouseMove]);
 
+  const handleFocus = useCallback(e => {
+    console.log("focuse")
+    console.log(e)
+    //e.target.select()
+  });
+
   if (!isOpen) return null;
   return (
     <div>
@@ -115,23 +121,18 @@ const Tape = ({
                                   (0==indPos && "active")}
                       key={'top'+0}></div>
 
-                  {/* <div className={
-                                  ("tape-cell-data tape-cell-data-left " +
-                                  (0==indPos && "active"))
-                                }
-                       key={'tapeItem'+0}>
-                    {contents[0]}
-                  </div> */}
-
                   <EditText
                     name={"textbox"+0}
-                    className="tape-cell-data tape-cell-data-left "
-                    // defaultValue={contents[0]}
-                    value={contents[0]}
-                    inputClassName='title-box'
+                    className={("tape-cell-data tape-cell-data-left " +
+                                (0==indPos && "active"))
+                              }
+                    defaultValue={contents[0]}
+                    //value={contents[0]}
+                    inputClassName={("tape-cell-entry " +
+                                    (0==indPos && "active"))
+                                  }
                     onChange={(e) => handleChange(e, setAutomatonTitle)}
                   />
-
               </div>
 
               { contents.slice(1).map((item, i) =>
@@ -140,13 +141,23 @@ const Tape = ({
                   <div className={"tape-cell-top " +
                                   ((i+1)==indPos && "active")}
                       key={'top'+i+1}></div>
-                  <div className={
+                  {/* <div className={
                                   ("tape-cell-data" + ' ' +
                                   ((i+1)==indPos && "active"))
                                 }
                        key={'tapeItem'+i+1}>
                     {item}
-                  </div>
+                  </div> */}
+                  <EditText
+                    name={"textbox"+i+1}
+                    className="tape-cell-data "
+                    defaultValue={item}
+                    // value={item}
+                    // onFocus={handleFocus}
+                    onEditMode={handleFocus}
+                    inputClassName='tape-cell-entry'
+                    onChange={(e) => handleChange(e, setAutomatonTitle)}
+                  />
               </div>
               )}
 
@@ -156,11 +167,19 @@ const Tape = ({
                   <div className={"tape-cell-top " +
                                   ((contents.length+i)==indPos && "active")}
                     key={'top'+contents.length+i}></div>
-                  <div className={"tape-cell-data " +
+                  {/* <div className={"tape-cell-data " +
                                   ((contents.length+i)==indPos && "active")}
                     key={'tapeItem'+contents.length+i}>
                     {item}
-                  </div>
+                  </div> */}
+                  <EditText
+                    name={"textbox"+contents.length+i}
+                    className="tape-cell-data "
+                    defaultValue={item}
+                    // value={item}
+                    inputClassName='tape-cell-entry'
+                    onChange={(e) => handleChange(e, setAutomatonTitle)}
+                  />
                 </div>
               )}
               </div>

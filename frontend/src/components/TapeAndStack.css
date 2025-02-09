@@ -60,16 +60,12 @@
 }
 
 .tape-contents {
-    /* height: 60px; */
     width: 1330px;
-    border-bottom: solid gray 2px;
 }
 
 .tape-cell {
     background-color: transparent;
     text-align: center;
-    /* display: block; */
-    /* height: 100%; */
     width: 35px;
     float: left;
     position: relative;
@@ -87,6 +83,7 @@
     text-align: center;
     font-size: 2em;
     user-select: none;
+    margin: 0;
 }
 
 .stack-cell-data {
@@ -108,11 +105,11 @@
     border-left: solid gray 2px;
 }
 
-.tape-cell-data.active {
+/* .tape-cell-data */
+.active {
     background-color: black;
     color: white;
 }
-
 
 .tape-cell-top {
     height: 10px;
@@ -159,4 +156,26 @@
     background-color:white;
     font-size: 2em;
     outline: none;
+}
+
+.tape-cell-entry {
+    background-color:white;
+    font-size: 2em;
+    outline: none;
+    height: 45px;
+    border-top: solid gray 2px;
+    border-right: solid gray 2px;
+    border-bottom: solid gray 2px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    text-align: center;
+    font-size: 2em;
+    user-select: none;
+    margin: 0;
+}
+
+.tape-cell-entry {
+    background-color: black;
+    color: white;
 }
