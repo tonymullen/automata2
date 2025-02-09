@@ -7,7 +7,6 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 
 import "./AddEdgeModal.css";
 
-
 const AddEdgeModal = ({
   isOpen,
   onClose,
@@ -22,6 +21,8 @@ const AddEdgeModal = ({
   const [selectedValue, setSelectedValue] = useState("⌄");
   const [read, setRead] = useState(null);
   const [action, setAction] = useState(null);
+  const [stackRead, setStackRead] = useState(null);
+  const [stackPush, setStackPush] = useState(null);
 
   const finalizeEdge = useCallback(() => {
     if (machineType === 'tm') {
@@ -38,6 +39,14 @@ const AddEdgeModal = ({
       updateAutomaton(edgeToAdd);
       setSelectedValue("⌄");
       setRead(null);
+    } else if (machineType === 'pda') {
+      edgeToAdd.data('read', read);
+      edgeToAdd.data('stackRead', stackRead);
+      edgeToAdd.data('stackPush', stackPush);
+      edgeToAdd.data('label', read+":"+stackRead+":"+stackPush);
+      updateAutomaton(edgeToAdd);
+      setSelectedValue("⌄");
+      setRead(null);
     }
   onClose();
   });
@@ -48,6 +57,14 @@ const AddEdgeModal = ({
 
   const handleSelectAction = (event) => {
     setAction(event.target.value);
+  };
+
+  const handleSelectStackRead = (event) => {
+    setStackRead(event.target.value);
+  };
+
+  const handleSelectStackPush = (event) => {
+    setStackPush(event.target.value);
   };
 
   if (!isOpen) return null;
@@ -89,6 +106,42 @@ const AddEdgeModal = ({
                 </select>
             </div>
             }
+
+            { machineType === 'pda' &&
+              <span className="edgeLabelSymbolInput">:</span>
+            }
+            { machineType === 'pda' &&
+              <div className="edgeLabelDropdown">
+                <select className="edgeLabelSymbolInput edgeLabelSelect
+                                  form-select-sm" aria-label=".form-select-sm
+                                  example" defaultValue={selectedValue}
+                                  onChange={handleSelectStackRead}>
+                  <option value={selectedValue} disabled={true}>⌄</option>
+                  {actionAlphabet.map(function(item, i){
+                    return <option value={item} key={i}>{item}</option>
+                  })}
+                </select>
+            </div>
+            }
+            { machineType === 'pda' &&
+              <span className="edgeLabelSymbolInput">:</span>
+            }
+            { machineType === 'pda' &&
+              <div className="edgeLabelDropdown">
+                <select className="edgeLabelSymbolInput edgeLabelSelect
+                                  form-select-sm" aria-label=".form-select-sm
+                                  example" defaultValue={selectedValue}
+                                  onChange={handleSelectStackPush}>
+                  <option value={selectedValue} disabled={true}>⌄</option>
+                  {actionAlphabet.map(function(item, i){
+                    return <option value={item} key={i}>{item}</option>
+                  })}
+                </select>
+            </div>
+            }
+
+
+
           </div>
           <Button className="add-edge-okay"
                   onClick={finalizeEdge}

@@ -600,7 +600,11 @@ function AutomatonEditor({user, type}) {
             });
 
             setSelectableReadAlphabet(readBaseAlphabet.current.concat(unusedAlphabet));
-            setSelectableActionAlphabet(actionBaseAlphabet.current.concat(automaton.alphabet));
+            if (automaton.machine=='tm') {
+              setSelectableActionAlphabet(actionBaseAlphabet.current.concat(automaton.alphabet));
+            } else if (automaton.machine=='pda') {
+              setSelectableActionAlphabet(automaton.alphabet);
+            }
           }
         });
         window.addEventListener('mouseup', function(e){

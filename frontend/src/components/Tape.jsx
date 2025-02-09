@@ -1,4 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
 import "./TapeAndStack.css";
 
 const Tape = ({
@@ -22,7 +24,6 @@ const Tape = ({
   // Function to handle mouse movement while dragging
   const onMouseMove = useCallback(e => {
       if (isDragging) {
-        console.log(position);
         setPosition({
           x: e.clientX - startPos.current.x,
           y: e.clientY - startPos.current.y,
@@ -78,10 +79,23 @@ const Tape = ({
     <div className="float-overlay">
       <div className="float"
         ref={popupRef}
+        tabindex={0}
         onClick={e => {
           console.log("Click");
           e.stopPropagation()
         }} //to prevent event delegation to the overlay
+        onKeyDown={e => {
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            setIndPos(indPos+1)
+          }
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            if (indPos > 0) {
+              setIndPos(indPos-1)
+            }
+          }
+        }}
         style={{
             transform: `translate(${position.x}px, ${position.y}px)`,
             width: `${width}px`
@@ -95,17 +109,29 @@ const Tape = ({
               <div className="tape-contents">
 
               <div className="tape-cell"
-                     key={'cell'+0} onClick={()=>{setIndPos(0)}}>
+                     key={'cell'+0}
+                     onClick={()=>{setIndPos(0)}}>
                   <div className={"tape-cell-top " +
                                   (0==indPos && "active")}
                       key={'top'+0}></div>
-                  <div className={
+
+                  {/* <div className={
                                   ("tape-cell-data tape-cell-data-left " +
                                   (0==indPos && "active"))
                                 }
                        key={'tapeItem'+0}>
                     {contents[0]}
-                  </div>
+                  </div> */}
+
+                  <EditText
+                    name={"textbox"+0}
+                    className="tape-cell-data tape-cell-data-left "
+                    // defaultValue={contents[0]}
+                    value={contents[0]}
+                    inputClassName='title-box'
+                    onChange={(e) => handleChange(e, setAutomatonTitle)}
+                  />
+
               </div>
 
               { contents.slice(1).map((item, i) =>
@@ -124,7 +150,7 @@ const Tape = ({
               </div>
               )}
 
-              { Array.apply(' ', Array(33)).map((item, i) =>
+              { Array.apply(' ', Array(35)).map((item, i) =>
                 <div className="tape-cell" key={'cell'+contents.length+i}
                   onClick={()=>{setIndPos(contents.length+i)}}>
                   <div className={"tape-cell-top " +

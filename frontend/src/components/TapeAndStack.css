@@ -154,3 +154,9 @@
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+
+.tape-stack-text-edit {
+    background-color:white;
+    font-size: 2em;
+    outline: none;
+}
