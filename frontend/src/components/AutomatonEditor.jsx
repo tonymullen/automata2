@@ -8,6 +8,7 @@ import cytoscapePopper from 'cytoscape-popper';
 import AutomataDataService from '../services/automata';
 import { generatePDF } from "../services/generatePDF";
 import { newAutomaton } from '../services/newAutomaton';
+import { stepFSA, stepPDA, stepTM } from '../services/runAutomata';
 
 import AddEdgeModal from './AddEdgeModal';
 import ControlButtons from './ControlButtons';
@@ -23,11 +24,11 @@ function AutomatonEditor({user, type}) {
   const loaded = useRef(false);
 
   // Initialize state for modals
-  const [isTapeModalOpen, setIsTapeModalOpen] = useState(false);
+  // const [isTapeModalOpen, setIsTapeModalOpen] = useState(false);
   const [isAddEdgeModalOpen, setIsAddEdgeModalOpen] = useState(false);
   const [edgeToAdd, setEdgeToAdd] = useState(null);
   const [edgeToAddPosition, setEdgeToAddPosition] = useState({x:0, y:0})
-  const openTapeModal = () => setIsTapeModalOpen(true);
+  // const openTapeModal = () => setIsTapeModalOpen(true);
   const openAddEdgeModal = () => setIsAddEdgeModalOpen(true);
   const closeAddEdgeModal = () => setIsAddEdgeModalOpen(false);
 
@@ -38,6 +39,10 @@ function AutomatonEditor({user, type}) {
   const readBaseAlphabet = useRef([]);
   const actionBaseAlphabet = useRef(['→', '←'])
 
+  // Running animation
+  const [running, setRunning] = useState(false);
+  const [currentRunState, setRunState] = useState(0);
+  const [currentTapeInd, setTapeInd] = useState(0);
 
   // Automaton state
   const [automaton, setAutomaton] = useState({
@@ -659,6 +664,15 @@ function AutomatonEditor({user, type}) {
     })
   });
 
+  const updateAutomatonTape = useCallback((newTape)=>{
+    console.log("Updating tape");
+    console.log(newTape);
+    setAutomaton({
+      ...automaton,
+      tape: newTape
+    })
+  });
+
   const updateNodeLocation = useCallback((cy_node)=>{
     automaton.eles.nodes.forEach(n=>{
       if (n.data.id === cy_node.data().id) {
@@ -680,6 +694,7 @@ function AutomatonEditor({user, type}) {
   });
 
   const saveAutomaton = useCallback(()=>{
+    console.log(automaton);
     if (save==='update') {
       AutomataDataService.updateAutomaton(automaton)
         .then(response => {
@@ -700,12 +715,40 @@ function AutomatonEditor({user, type}) {
     }
   });
 
+  const step = useCallback(()=>{
+    let cy = cyRef.current;
+    console.log(cy);
+    console.log(automaton);
+    if (!running) {
+      setRunning(true);
+      setRunState(0);
+      setTapeInd(0);
+      let { nextState, nextIndex } = stepFSA(0, 0, cy, automaton);
+      setRunState(nextState);
+      setTapeInd(nextIndex);
+    } else {
+      let { nextState, nextIndex } = stepFSA(0, 0, cy, automaton);
+      setRunState(nextState);
+      setTapeInd(nextIndex);
+    }
+  });
+
+  const play = useCallback((speed)=>{
+    if (speed==='fast') {
+      console.log('fast')
+    } else {
+      console.log('regular speed')
+    }
+  });
+
+
   return (
     <div className="automaton-editor">
       { automaton.tape.position &&
       <Tape
         isOpen={true}
         contents={automaton.tape.contents}
+        updateTape={updateAutomatonTape}
         indexPos={automaton.tape.indexPos}
         pos={automaton.tape.position}/>
       }
@@ -728,7 +771,10 @@ function AutomatonEditor({user, type}) {
         createPDF={createPDF}
         saveAutomaton={saveAutomaton}
         automatonTitle={automaton.title}
-        setAutomatonTitle={setAutomatonTitle}/>
+        setAutomatonTitle={setAutomatonTitle}
+        play={play}
+        step={step}
+        />
       <CytoscapeComponent
         id="cy"
         zoom={1}

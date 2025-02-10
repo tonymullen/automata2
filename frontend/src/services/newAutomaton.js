@@ -34,7 +34,7 @@ export function newAutomaton(user, type) {
                 'x': 0,
                 'y': 220
             },
-            contents: ['A','B','C']}
+            contents: [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']}
     }
     if (type=='pda') {
         machine.stack = {
@@ -42,7 +42,7 @@ export function newAutomaton(user, type) {
                 'x': -455,
                 'y': 30
             },
-            contents: ['A','B','C']
+            contents: [' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ']
         }
     }
 

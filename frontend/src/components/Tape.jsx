@@ -6,6 +6,7 @@ import "./TapeAndStack.css";
 const Tape = ({
   isOpen,
   contents,
+  updateTape,
   indexPos,
   pos
 }) => {
@@ -73,11 +74,24 @@ const Tape = ({
     };
   }, [onMouseMove]);
 
+
   const handleFocus = useCallback(e => {
-    console.log("focuse")
-    console.log(e)
-    //e.target.select()
+    console.log(e);
   });
+
+  const handleChange = (e, ind) => {
+      console.log("Handling change")
+      console.log(e.target.value);
+      let newContents = contents;
+      newContents[ind] = e.target.value;
+      let newTape = {
+        "indexPos": indPos,
+        "position": position,
+        "contents": newContents
+      }
+      console.log("Ok, wtf:")
+      updateTape(newTape);
+  };
 
   if (!isOpen) return null;
   return (
@@ -85,9 +99,8 @@ const Tape = ({
     <div className="float-overlay">
       <div className="float"
         ref={popupRef}
-        tabindex={0}
+        tabIndex={0}
         onClick={e => {
-          console.log("Click");
           e.stopPropagation()
         }} //to prevent event delegation to the overlay
         onKeyDown={e => {
@@ -127,66 +140,58 @@ const Tape = ({
                                 (0==indPos && "active"))
                               }
                     defaultValue={contents[0]}
-                    //value={contents[0]}
+                    value={contents[0]}
                     inputClassName={("tape-cell-entry " +
                                     (0==indPos && "active"))
                                   }
-                    onChange={(e) => handleChange(e, setAutomatonTitle)}
+                    onChange={(e) => handleChange(e, 0)}
                   />
               </div>
 
               { contents.slice(1).map((item, i) =>
                 <div className="tape-cell"
-                     key={'cell'+i+1} onClick={()=>{setIndPos(i+1)}}>
+                     key={'cell'+i+1} onClick={
+                        (e)=>{
+                          setIndPos(i+1);
+                        }
+                      }>
                   <div className={"tape-cell-top " +
                                   ((i+1)==indPos && "active")}
                       key={'top'+i+1}></div>
-                  {/* <div className={
-                                  ("tape-cell-data" + ' ' +
-                                  ((i+1)==indPos && "active"))
-                                }
-                       key={'tapeItem'+i+1}>
-                    {item}
-                  </div> */}
+
                   <EditText
                     name={"textbox"+i+1}
                     className={("tape-cell-data " +
                       ((i+1)==indPos && "active"))
                      }
                     defaultValue={item}
-                    // value={item}
-                    // onFocus={handleFocus}
-                    onEditMode={handleFocus}
+                    value={item}
                     inputClassName={("tape-cell-entry " +
                        ((i+1)==indPos && "active"))
                       }
-                    onChange={(e) => handleChange(e, setAutomatonTitle)}
+                    onChange={(e) => handleChange(e, i+1)}
                   />
               </div>
               )}
 
-              { Array.apply(' ', Array(35)).map((item, i) =>
+              { Array.apply('', Array(24)).map((item, i) =>
                 <div className="tape-cell" key={'cell'+contents.length+i}
                   onClick={()=>{setIndPos(contents.length+i)}}>
                   <div className={"tape-cell-top " +
                                   ((contents.length+i)==indPos && "active")}
                     key={'top'+contents.length+i}></div>
-                  {/* <div className={"tape-cell-data " +
-                                  ((contents.length+i)==indPos && "active")}
-                    key={'tapeItem'+contents.length+i}>
-                    {item}
-                  </div> */}
+
                   <EditText
                     name={"textbox"+contents.length+i}
                     className={("tape-cell-data " +
                       ((contents.length+i)==indPos && "active"))
                      }
                     defaultValue={item}
-                    // value={item}
+                    value={item}
                     inputClassName={("tape-cell-entry " +
                       ((contents.length+i)==indPos && "active"))
                      }
-                    onChange={(e) => handleChange(e, setAutomatonTitle)}
+                    onChange={(e) => handleChange(e, contents.length+i)}
                   />
                 </div>
               )}

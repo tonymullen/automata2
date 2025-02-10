@@ -9,7 +9,9 @@ function ControlButtons({
     createPDF,
     saveAutomaton,
     automatonTitle,
-    setAutomatonTitle
+    setAutomatonTitle,
+    play,
+    step
 }) {
     const handleChange = (e, setFn) => {
         setFn(e.target.value);
@@ -18,9 +20,9 @@ function ControlButtons({
         <div className="controller-buttons">
             <div className="playIcons noSelect">
                 <span className="playIcons noSelect">
-                    <span className="auticon-controller-play" onClick={()=>{}}></span>
-                    <span className="auticon-controller-fast-forward" onClick={()=>{}}></span>
-                    <span className="auticon-controller-step" onClick={()=>{}}></span>
+                    <span className="auticon-controller-play" onClick={()=>play()}></span>
+                    <span className="auticon-controller-fast-forward" onClick={()=>play('fast')}></span>
+                    <span className="auticon-controller-step" onClick={()=>step()}></span>
                     {/* <span className="auticon-controller-pause" onClick={()=>{}}></span>
                     <span className="auticon-controller-jump-to-start" onClick={()=>{}}></span> */}
                 </span>
