@@ -41,8 +41,9 @@ function AutomatonEditor({user, type}) {
 
   // Running animation
   const [running, setRunning] = useState(false);
-  const [currentRunState, setRunState] = useState(0);
-  const [currentTapeInd, setTapeInd] = useState(0);
+  // const [runState, setRunState] = useState(0);
+  const [nextState, setNextState] = useState(0);
+  const [nextIndex, setNextIndex] = useState(0);
 
   // Automaton state
   const [automaton, setAutomaton] = useState({
@@ -85,6 +86,7 @@ function AutomatonEditor({user, type}) {
       }
     }
   }, [params.id, user]);
+
 
   // Set up listeners and Cytoscape stuff
   // on automaton
@@ -155,7 +157,6 @@ function AutomatonEditor({user, type}) {
 
         cy.on('remove', 'edge', function(e) {
           let idToDel = e.target.data().id;
-          console.log(automaton.eles.edges);
           automaton.eles.edges = automaton.eles.edges.filter(
             (e) => !(e.data.id === idToDel),
           );
@@ -646,7 +647,6 @@ function AutomatonEditor({user, type}) {
   });
 
   const updateAutomatonNodes = useCallback((cy_node)=>{
-    console.log(cy_node);
     let newNode = {
       data: cy_node.data(),
       position: cy_node.position(),
@@ -664,9 +664,12 @@ function AutomatonEditor({user, type}) {
     })
   });
 
+  const clickTapeUpdate = useCallback((newTape)=>{
+    setRunning(false);
+    updateAutomatonTape(newTape);
+  });
+
   const updateAutomatonTape = useCallback((newTape)=>{
-    console.log("Updating tape");
-    console.log(newTape);
     setAutomaton({
       ...automaton,
       tape: newTape
@@ -686,7 +689,6 @@ function AutomatonEditor({user, type}) {
   });
 
   const setAutomatonTitle = useCallback((text)=>{
-    console.log("Setting title: ", text);
     setAutomaton({
       ...automaton,
       "title": text
@@ -694,7 +696,6 @@ function AutomatonEditor({user, type}) {
   });
 
   const saveAutomaton = useCallback(()=>{
-    console.log(automaton);
     if (save==='update') {
       AutomataDataService.updateAutomaton(automaton)
         .then(response => {
@@ -706,7 +707,6 @@ function AutomatonEditor({user, type}) {
     } else if (save==='create') {
       AutomataDataService.createAutomaton(automaton)
         .then(response => {
-          console.log(response.data.response.insertedId);
           navigate(`/automata/${response.data.response.insertedId}`);
         })
         .catch(e => {
@@ -717,19 +717,26 @@ function AutomatonEditor({user, type}) {
 
   const step = useCallback(()=>{
     let cy = cyRef.current;
-    console.log(cy);
-    console.log(automaton);
     if (!running) {
       setRunning(true);
-      setRunState(0);
-      setTapeInd(0);
-      let { nextState, nextIndex } = stepFSA(0, 0, cy, automaton);
-      setRunState(nextState);
-      setTapeInd(nextIndex);
+      // setRunState(0);
+      updateAutomatonTape({
+        ...automaton.tape,
+        indexPos: 0
+      })
+      let { nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton);
+      console.log("Next state:")
+      console.log(nextS);
+      setNextState(nextS);
+      setNextIndex(nextI);
     } else {
-      let { nextState, nextIndex } = stepFSA(0, 0, cy, automaton);
-      setRunState(nextState);
-      setTapeInd(nextIndex);
+      updateAutomatonTape({
+        ...automaton.tape,
+        indexPos: nextIndex
+      })
+      let { nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton);
+      setNextState(nextS);
+      setNextIndex(nextI);
     }
   });
 
@@ -741,14 +748,14 @@ function AutomatonEditor({user, type}) {
     }
   });
 
-
   return (
     <div className="automaton-editor">
       { automaton.tape.position &&
       <Tape
+        // automatonChanged={automatonChanged}
         isOpen={true}
         contents={automaton.tape.contents}
-        updateTape={updateAutomatonTape}
+        updateTape={clickTapeUpdate}
         indexPos={automaton.tape.indexPos}
         pos={automaton.tape.position}/>
       }

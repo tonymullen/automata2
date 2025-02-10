@@ -4,6 +4,7 @@ import 'react-edit-text/dist/index.css';
 import "./TapeAndStack.css";
 
 const Tape = ({
+  //automatonChanged,
   isOpen,
   contents,
   updateTape,
@@ -13,7 +14,7 @@ const Tape = ({
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const [position, setPosition] = useState(pos);
-  const [indPos, setIndPos] = useState(indexPos);
+  // const [indPos, setIndPos] = useState(indexPos);
   const [width, setWidth] = useState(750);
 
   // Ref to store the initial mouse position when dragging starts
@@ -64,6 +65,14 @@ const Tape = ({
     };
   };
 
+  const setIndPos = useCallback(i => {
+    updateTape({
+      "indexPos": i,
+      "position": pos,
+      "contents": contents
+    });
+  });
+
   // Effect to add and clean up event listeners for dragging
   useEffect(() => {
     window.addEventListener("mousemove", onMouseMove);
@@ -85,7 +94,7 @@ const Tape = ({
       let newContents = contents;
       newContents[ind] = e.target.value;
       let newTape = {
-        "indexPos": indPos,
+        "indexPos": indexPos,
         "position": position,
         "contents": newContents
       }
@@ -106,12 +115,12 @@ const Tape = ({
         onKeyDown={e => {
           if (e.key === 'ArrowRight') {
             e.preventDefault();
-            setIndPos(indPos+1)
+            setIndPos(indexPos+1)
           }
           if (e.key === 'ArrowLeft') {
             e.preventDefault();
-            if (indPos > 0) {
-              setIndPos(indPos-1)
+            if (indexPos > 0) {
+              setIndPos(indexPos-1)
             }
           }
         }}
@@ -131,18 +140,18 @@ const Tape = ({
                      key={'cell'+0}
                      onClick={()=>{setIndPos(0)}}>
                   <div className={"tape-cell-top " +
-                                  (0==indPos && "active")}
+                                  (0==indexPos && "active")}
                       key={'top'+0}></div>
 
                   <EditText
                     name={"textbox"+0}
                     className={("tape-cell-data tape-cell-data-left " +
-                                (0==indPos && "active"))
+                                (0==indexPos && "active"))
                               }
                     defaultValue={contents[0]}
                     value={contents[0]}
                     inputClassName={("tape-cell-entry " +
-                                    (0==indPos && "active"))
+                                    (0==indexPos && "active"))
                                   }
                     onChange={(e) => handleChange(e, 0)}
                   />
@@ -156,18 +165,18 @@ const Tape = ({
                         }
                       }>
                   <div className={"tape-cell-top " +
-                                  ((i+1)==indPos && "active")}
+                                  ((i+1)==indexPos && "active")}
                       key={'top'+i+1}></div>
 
                   <EditText
                     name={"textbox"+i+1}
                     className={("tape-cell-data " +
-                      ((i+1)==indPos && "active"))
+                      ((i+1)==indexPos && "active"))
                      }
                     defaultValue={item}
                     value={item}
                     inputClassName={("tape-cell-entry " +
-                       ((i+1)==indPos && "active"))
+                       ((i+1)==indexPos && "active"))
                       }
                     onChange={(e) => handleChange(e, i+1)}
                   />
@@ -178,18 +187,18 @@ const Tape = ({
                 <div className="tape-cell" key={'cell'+contents.length+i}
                   onClick={()=>{setIndPos(contents.length+i)}}>
                   <div className={"tape-cell-top " +
-                                  ((contents.length+i)==indPos && "active")}
+                                  ((contents.length+i)==indexPos && "active")}
                     key={'top'+contents.length+i}></div>
 
                   <EditText
                     name={"textbox"+contents.length+i}
                     className={("tape-cell-data " +
-                      ((contents.length+i)==indPos && "active"))
+                      ((contents.length+i)==indexPos && "active"))
                      }
                     defaultValue={item}
                     value={item}
                     inputClassName={("tape-cell-entry " +
-                      ((contents.length+i)==indPos && "active"))
+                      ((contents.length+i)==indexPos && "active"))
                      }
                     onChange={(e) => handleChange(e, contents.length+i)}
                   />
