@@ -9,7 +9,8 @@ const Tape = ({
   contents,
   updateTape,
   indexPos,
-  pos
+  pos,
+  normalAcceptReject
 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
@@ -146,6 +147,7 @@ const Tape = ({
                   <EditText
                     name={"textbox"+0}
                     className={("tape-cell-data tape-cell-data-left " +
+                                normalAcceptReject + ' ' +
                                 (0==indexPos && "active"))
                               }
                     defaultValue={contents[0]}
@@ -170,7 +172,7 @@ const Tape = ({
 
                   <EditText
                     name={"textbox"+i+1}
-                    className={("tape-cell-data " +
+                    className={("tape-cell-data " + normalAcceptReject + ' ' +
                       ((i+1)==indexPos && "active"))
                      }
                     defaultValue={item}

@@ -6,6 +6,7 @@ import cxtmenu from 'cytoscape-cxtmenu';
 import edgehandles from 'cytoscape-edgehandles';
 import cytoscapePopper from 'cytoscape-popper';
 import AutomataDataService from '../services/automata';
+// import { setup } from '../services/cytoscapeSetup'; TODO: refactor
 import { generatePDF } from "../services/generatePDF";
 import { newAutomaton } from '../services/newAutomaton';
 import { stepFSA, stepPDA, stepTM } from '../services/runAutomata';
@@ -44,6 +45,8 @@ function AutomatonEditor({user, type}) {
   // const [runState, setRunState] = useState(0);
   const [nextState, setNextState] = useState(0);
   const [nextIndex, setNextIndex] = useState(0);
+  const [tapeNormalAcceptReject, setTapeNormalAcceptReject] = useState('normal');
+  const [stepTrigger, setStepTrigger] = useState(0)
 
   // Automaton state
   const [automaton, setAutomaton] = useState({
@@ -99,6 +102,10 @@ function AutomatonEditor({user, type}) {
       if (cyRef.current) {
         // Access the Cytoscape instance
         const cy = cyRef.current;
+
+        // TODO: refactor all of the below into
+        // cytoscapeSetup
+
         cy.removeAllListeners();
 
         let tapx;
@@ -693,7 +700,7 @@ function AutomatonEditor({user, type}) {
       ...automaton,
       "title": text
     })
-  });
+  }, [setAutomaton]);
 
   const saveAutomaton = useCallback(()=>{
     if (save==='update') {
@@ -719,34 +726,52 @@ function AutomatonEditor({user, type}) {
     let cy = cyRef.current;
     if (!running) {
       setRunning(true);
-      // setRunState(0);
       updateAutomatonTape({
         ...automaton.tape,
         indexPos: 0
       })
-      let { nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton);
-      console.log("Next state:")
-      console.log(nextS);
+      let nextS, nextI;
+      ({ nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton,
+                                  setTapeNormalAcceptReject));
       setNextState(nextS);
       setNextIndex(nextI);
+      return Math.random() // not finished
     } else {
       updateAutomatonTape({
         ...automaton.tape,
         indexPos: nextIndex
       })
-      let { nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton);
+      let nextS, nextI;
+      ({ nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton,
+                                  setTapeNormalAcceptReject));
       setNextState(nextS);
       setNextIndex(nextI);
+      if (nextS === null && nextI === null) {
+        setRunning(false);
+        setNextState(0);
+        setNextIndex(0);
+        return 0 // finished
+      }
+      return Math.random() // not finished
     }
-  });
+  }, [updateAutomatonTape, setNextState, setNextIndex]);
+
+  useEffect(()=>{
+    if (stepTrigger > 0) {
+      setTimeout(()=>{
+        setStepTrigger(step())
+      }, 1000);
+    }
+  },[stepTrigger]);
 
   const play = useCallback((speed)=>{
     if (speed==='fast') {
       console.log('fast')
     } else {
-      console.log('regular speed')
+      setRunning(false);
+      setStepTrigger(1);
     }
-  });
+  }, [step, running]);
 
   return (
     <div className="automaton-editor">
@@ -757,7 +782,8 @@ function AutomatonEditor({user, type}) {
         contents={automaton.tape.contents}
         updateTape={clickTapeUpdate}
         indexPos={automaton.tape.indexPos}
-        pos={automaton.tape.position}/>
+        pos={automaton.tape.position}
+        normalAcceptReject={tapeNormalAcceptReject}/>
       }
       { automaton.stack && automaton.stack.position &&
       <Stack
