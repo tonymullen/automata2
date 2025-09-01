@@ -1,6 +1,5 @@
 export function stepFSA(state, index, cy, automaton,
                         setTapeNormalAcceptReject) {
-    alert();
     cy.nodes().forEach((n)=>{
         n.addClass('running');
         n.removeClass('active');
@@ -33,7 +32,6 @@ export function stepFSA(state, index, cy, automaton,
         return ({"nextS": null,
                  "nextI": null});
     } else {
-        console.log(">>"+automaton.tape.contents[index]+"<<");
         let nextEdge;
         cy.edges().forEach(e=>{
             console.log(e.data().read);
@@ -56,15 +54,9 @@ export function stepPDA() {
 };
 
 export function stepTM(state, index, cy, automaton) {
-    console.log("Running TM")
-    // This is logic for FSA. Must be written for TM
-
     cy.nodes().forEach((n)=>{
         n.addClass('running');
         n.removeClass('active');
-        // n.removeClass('accepting');
-        // n.removeClass('rejected');
-        // setTapeNormalAcceptReject('normal');
     });
     cy.edges().forEach((e)=>{
         e.addClass('running');
@@ -73,18 +65,7 @@ export function stepTM(state, index, cy, automaton) {
     if (state === 0) {
         cy.nodes('#start').addClass('active');
     }
-    // if (automaton.tape.contents[index] == ' ') {
-    //     cy.nodes().forEach((n)=>{
-    //         n.removeClass('running');
-    //     });
-    //     cy.edges().forEach((e)=>{
-    //         e.removeClass('running');
-    //     });
 
-    //     return ({"nextS": null,
-    //              "nextI": null});
-    // } else {
-    console.log(">>"+automaton.tape.contents[index]+"<<");
     let readChar = automaton.tape.contents[index] === ' '
                     ? '_': automaton.tape.contents[index];
     let nextEdge;
