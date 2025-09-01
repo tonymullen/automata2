@@ -60,7 +60,8 @@
 }
 
 .tape-contents {
-    width: 1330px;
+    /* hard coding this causes problems. Rethink */
+    width: 2590px;
     background-color: white;
 }
 

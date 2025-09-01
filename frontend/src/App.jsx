@@ -81,11 +81,13 @@ function App() {
               </Nav> */}
 
             </Navbar.Collapse>
+
             { user ? (
                 <Logout setUser={setUser}/>
               ) : (
                 <Login setUser={setUser}/>
               )}
+
           </Container>
         </Navbar>
         <Routes>

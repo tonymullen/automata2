@@ -26,6 +26,7 @@ const Tape = ({
 
   // Function to handle mouse movement while dragging
   const onMouseMove = useCallback(e => {
+
       if (isDragging) {
         setPosition({
           x: e.clientX - startPos.current.x,
@@ -85,13 +86,11 @@ const Tape = ({
   }, [onMouseMove]);
 
 
-  const handleFocus = useCallback(e => {
-    console.log(e);
-  });
+  // const handleFocus = useCallback(e => {
+  //   console.log(e);
+  // });
 
   const handleChange = (e, ind) => {
-      console.log("Handling change")
-      console.log(e.target.value);
       let newContents = contents;
       newContents[ind] = e.target.value;
       let newTape = {
@@ -99,7 +98,6 @@ const Tape = ({
         "position": position,
         "contents": newContents
       }
-      console.log("Ok, wtf:")
       updateTape(newTape);
   };
 

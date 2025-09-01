@@ -9,11 +9,11 @@
   /*height: 100px;*/
   z-index: 50; }
 
-/*
-.tape-window.ui-resizeable-ew {
 
-}
-*/
+/* .tape-window.ui-resizeable-ew {
+
+} */
+
 #tape {
   position: absolute;
   top: 75%; }
@@ -61,7 +61,7 @@ div.tapeWindowBody {
 .floating-window {
   max-height: 1000px;
   overflow: hidden;
-  transition: max-height .4s ease; 
+  transition: max-height .4s ease;
   -webkit-transition: max-height .4s ease; }
 
 .floating-window.minimize, .floating-window.minimize-add.minimize-add-active, .floating-window.minimize-remove {
@@ -80,7 +80,7 @@ div.tapeWindowBody {
 
 .panel.tape-window {
   background-color: white;
-  background-color: rgba(255, 255, 255, 0.5); 
+  background-color: rgba(255, 255, 255, 0.5);
   border-color: #080808;}
 
 tr.tape-content > td {
@@ -120,7 +120,7 @@ tr.tape-content > td.active > input.tape-cell:focus {
   color: lightgray; }
 
 input:focus {
-  background-color: lightgray; 
+  background-color: lightgray;
   outline: none; }
 
 tr.rw-head > td {

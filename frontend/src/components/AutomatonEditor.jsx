@@ -64,7 +64,9 @@ function AutomatonEditor({user, type}) {
 
   // Retrieve Automaton from database
   useEffect(() => {
-    if (user) {
+    // This shouldn't rely entirely on user. Deal with this when users
+    // are fixed
+    // if (user) {
       if (params.id === 'newtm') {
         setAutomaton(newAutomaton(user.googleId, 'tm'));
         setSave('create');
@@ -87,7 +89,7 @@ function AutomatonEditor({user, type}) {
         }
         getAutomaton(params.id)
       }
-    }
+    // }
   }, [params.id, user]);
 
 
@@ -731,8 +733,10 @@ function AutomatonEditor({user, type}) {
         indexPos: 0
       })
       let nextS, nextI;
-      ({ nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton,
-                                  setTapeNormalAcceptReject));
+      // ({ nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton,
+      //                             setTapeNormalAcceptReject));
+      ({ nextS, nextI } = stepTM(nextState, nextIndex, cy, automaton));
+
       setNextState(nextS);
       setNextIndex(nextI);
       return Math.random() // not finished
@@ -742,8 +746,11 @@ function AutomatonEditor({user, type}) {
         indexPos: nextIndex
       })
       let nextS, nextI;
-      ({ nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton,
-                                  setTapeNormalAcceptReject));
+      // ({ nextS, nextI } = stepFSA(nextState, nextIndex, cy, automaton,
+      //                             setTapeNormalAcceptReject));
+      ({ nextS, nextI } = stepTM(nextState, nextIndex, cy, automaton));
+
+
       setNextState(nextS);
       setNextIndex(nextI);
       if (nextS === null && nextI === null) {
@@ -775,7 +782,7 @@ function AutomatonEditor({user, type}) {
 
   return (
     <div className="automaton-editor">
-      { automaton.tape.position &&
+      { automaton.tape.position !== undefined &&
       <Tape
         // automatonChanged={automatonChanged}
         isOpen={true}

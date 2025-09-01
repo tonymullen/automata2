@@ -1,5 +1,6 @@
 export function stepFSA(state, index, cy, automaton,
                         setTapeNormalAcceptReject) {
+    alert();
     cy.nodes().forEach((n)=>{
         n.addClass('running');
         n.removeClass('active');
@@ -54,6 +55,77 @@ export function stepPDA() {
 
 };
 
-export function stepTM() {
+export function stepTM(state, index, cy, automaton) {
+    console.log("Running TM")
+    // This is logic for FSA. Must be written for TM
 
+    cy.nodes().forEach((n)=>{
+        n.addClass('running');
+        n.removeClass('active');
+        // n.removeClass('accepting');
+        // n.removeClass('rejected');
+        // setTapeNormalAcceptReject('normal');
+    });
+    cy.edges().forEach((e)=>{
+        e.addClass('running');
+        e.removeClass('active');
+    });
+    if (state === 0) {
+        cy.nodes('#start').addClass('active');
+    }
+    // if (automaton.tape.contents[index] == ' ') {
+    //     cy.nodes().forEach((n)=>{
+    //         n.removeClass('running');
+    //     });
+    //     cy.edges().forEach((e)=>{
+    //         e.removeClass('running');
+    //     });
+
+    //     return ({"nextS": null,
+    //              "nextI": null});
+    // } else {
+    console.log(">>"+automaton.tape.contents[index]+"<<");
+    let readChar = automaton.tape.contents[index] === ' '
+                    ? '_': automaton.tape.contents[index];
+    let nextEdge;
+    let nextMoveExists = false;
+    cy.edges().forEach(e=>{
+        if (e.data().read == readChar
+                &&
+            e.data().source == state) {
+                nextMoveExists = true;
+                nextEdge = e
+                console.log(e.data().action);
+                if (e.data().action === '<') {
+                    index--
+                }
+                else if (e.data().action === '>') {
+                    index++
+                } else {
+                    automaton.tape.contents[index] =
+                        e.data().action === '_' ? " "
+                        : e.data().action;
+                }
+            }
+
+        })
+    if (nextMoveExists) {
+        nextEdge.addClass('active');
+        cy.nodes('#'+state).addClass('active');
+        return (
+            {"nextS": nextEdge.data().target,
+            "nextI": index});
+    } else {
+        cy.nodes().forEach((n)=>{
+            n.removeClass('running');
+            n.removeClass('active');
+        });
+        cy.edges().forEach((e)=>{
+            e.removeClass('running');
+            e.removeClass('active');
+        });
+        return (
+            {"nextS": null,
+            "nextI": null});
+    }
 };
